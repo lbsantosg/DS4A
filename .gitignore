@@ -1,0 +1,5 @@
+#General
+.venv/
+.env 
+EDA/raw_data/
+proyect_DS4A_accessKeys.cvs
