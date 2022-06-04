@@ -3,3 +3,6 @@
 .env 
 EDA/raw_data/
 proyect_DS4A_accessKeys.csv
+
+*.csv
+*.png
