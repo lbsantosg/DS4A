@@ -3,6 +3,7 @@ import dash
 import dash_labs as dl
 import dash_bootstrap_components as dbc
 import os
+import json
 
 
 # Dash instance declaration
@@ -14,17 +15,19 @@ app = dash.Dash(__name__, plugins=[dl.plugins.pages], external_stylesheets=[dbc.
 navbar = dbc.NavbarSimple([
 
     dbc.NavItem(dbc.NavLink( "Home", href="/")),
-    dbc.DropdownMenu(
-        [
+#    dbc.DropdownMenu(
+#        [
 
-            dbc.DropdownMenuItem(page["name"], href=page["path"])
-            for page in dash.page_registry.values()
-            if page["module"] != "pages.not_found_404"
-        ],
-        nav=True,
-        label="Data Science",
-    ),
+#            dbc.DropdownMenuItem(page["name"], href=page["path"])
+#            for page in dash.page_registry.values()
+#            if page["module"] != "pages.not_found_404"
+#        ],
+#        nav=True,
+#        label="Data Science",
+#    ),
     dbc.NavItem(dbc.NavLink("About us", href="/nosotros")),
+    dbc.NavItem(dbc.NavLink( "Basic", href="/basicpage")),
+    dbc.NavItem(dbc.NavLink( "Heatmaps", href="/heatmaps")),
     ],
     brand="DS4A Project - Cohort 6 - Team 166",
     color="primary",
