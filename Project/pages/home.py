@@ -3,9 +3,7 @@ from dash import html , dcc
 import dash_bootstrap_components as dbc
 from dash_labs.plugins import register_page
 import json
-#from components.kpi.kpibadge import kpibadge
-#from components.maps.mapsample import mapsample
-#mapa_ejemplo = mapsample('Mapa de ejemplo', 'id_mapa_ejemplo')
+
 
 #Getting json info
 j = open("./data/jsonfiles/demo.json")
@@ -24,5 +22,6 @@ layout=  dbc.DropdownMenu(
     ],
     label = "Test Menu",
     menu_variant="dark",
+    className="content"
     
 )

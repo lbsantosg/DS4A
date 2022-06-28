@@ -1,44 +1,56 @@
 #libraries
+from pydoc import classname
 import dash
 import dash_labs as dl
 import dash_bootstrap_components as dbc
 import os
-import json
-
-
-# Dash instance declaration
-app = dash.Dash(__name__, plugins=[dl.plugins.pages], external_stylesheets=[dbc.themes.FLATLY],)
+from dash import Input, Output, dcc, html
+import dash_trich_components as dtc
 
 
 
-#Top menu, items get from all pages registered with plugin.pages
-navbar = dbc.NavbarSimple([
+# Dash instance declaration , using icons from font awesome
+app = dash.Dash(__name__, plugins=[dl.plugins.pages], external_stylesheets=[
+{
+    'href': 'https://use.fontawesome.com/releases/v5.8.1/css/all.css',
+    'rel': 'stylesheet',
+    'integrity': 'sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf',
+    'crossorigin': 'anonymous'
+}
+],)
 
-    dbc.NavItem(dbc.NavLink( "Home", href="/")),
-#    dbc.DropdownMenu(
-#        [
-
-#            dbc.DropdownMenuItem(page["name"], href=page["path"])
-#            for page in dash.page_registry.values()
-#            if page["module"] != "pages.not_found_404"
-#        ],
-#        nav=True,
-#        label="Data Science",
-#    ),
-    dbc.NavItem(dbc.NavLink("About us", href="/nosotros")),
-    dbc.NavItem(dbc.NavLink( "Basic", href="/basicpage")),
-    dbc.NavItem(dbc.NavLink( "Heatmaps", href="/heatmaps")),
+#Top navbar
+navbar = dbc.NavbarSimple(
+    [html.A([
+        html.Img(src="./assets/images/logo.png", height="52px")
     ],
-    brand="DS4A Project - Cohort 6 - Team 166",
-    color="primary",
+    href="/"      
+        
+    )],
     dark=True,
-    className="mb-2",
+    class_name="",
+    sticky="top",
 )
+
+#Creating sidebar, to insert content on page use className : content
+sidebar =  html.Div([
+    dtc.SideBar([
+        dtc.SideBarItem(id='id_1', label="Hacer Test", icon="fas fa-home"),
+        dtc.SideBarItem(id='id_2', label="Sobre Nosotros", icon="fas fa-chart-line"),
+        dtc.SideBarItem(id='id_3', label="Política de Uso", icon="far fa-list-alt"),
+    ]),
+    html.Div([
+    ], 
+    id="page_content",
+    ),
+])
+
 
 #Main layout
 app.layout = dbc.Container(
     [
         navbar,
+        sidebar,
         dl.plugins.page_container,
     ],
     className="dbc",

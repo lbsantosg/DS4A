@@ -23,5 +23,6 @@ layout = dbc.Container(
             ], lg=12), 
 
         ]),
-        ]
+        ],
+        className="content"
 )  

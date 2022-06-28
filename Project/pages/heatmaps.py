@@ -22,7 +22,7 @@ layout = html.Div(
                     multi = True
                 ),
         dcc.Graph(id="heatmaps-graph"),
-    ], className='card'
+    ], className='content'
 )
 
 @callback(
