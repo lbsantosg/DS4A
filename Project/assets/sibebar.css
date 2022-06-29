@@ -1,8 +1,10 @@
-.sidenav---sidenav---_2tBP {
-        
+.sidebar {
+    position: fixed;    
     top: 56px;
     left: 15px;
     bottom: 0;
+    padding: 2rem 1rem;
+    width: 16rem;
     background-color: #a5a5a5 !important;
     
 }

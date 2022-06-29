@@ -10,22 +10,12 @@ import dash_trich_components as dtc
 
 
 # Dash instance declaration , using icons from font awesome
-app = dash.Dash(__name__, plugins=[dl.plugins.pages], external_stylesheets=[
-{
-    'href': 'https://use.fontawesome.com/releases/v5.8.1/css/all.css',
-    'rel': 'stylesheet',
-    'integrity': 'sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf',
-    'crossorigin': 'anonymous'
-}
-],)
+app = dash.Dash(__name__, plugins=[dl.plugins.pages], external_stylesheets=[dbc.icons.BOOTSTRAP])
 
 #Top navbar
 navbar = dbc.NavbarSimple(
-    [html.A([
-        html.Img(src="./assets/images/logo.png", height="52px")
-    ],
-    href="/"      
-        
+    [
+        html.A([ html.Img(src="./assets/images/logo.png", height="52px") ],  href="/"     
     )],
     dark=True,
     class_name="",
@@ -33,18 +23,44 @@ navbar = dbc.NavbarSimple(
 )
 
 #Creating sidebar, to insert content on page use className : content
-sidebar =  html.Div([
-    dtc.SideBar([
-        dtc.SideBarItem(id='id_1', label="Hacer Test", icon="fas fa-home"),
-        dtc.SideBarItem(id='id_2', label="Sobre Nosotros", icon="fas fa-chart-line"),
-        dtc.SideBarItem(id='id_3', label="Política de Uso", icon="far fa-list-alt"),
-    ]),
-    html.Div([
-    ], 
-    id="page_content",
-    ),
-])
+sidebar = html.Div(
+    [        
+        dbc.Nav(
+            [
+                html.Br(),
+                html.Br(),
+                html.Br(),
+                html.Br(),
+                html.Br(),
+                html.Br(),
+                html.Br(),
+                html.Br(),
+                dbc.NavLink([html.I(className="bi bi-house-fill ic"),"Realizar Test"],
+                href="/cuestionario", active="exact"),                                    
+                html.Br(),
+                html.Br(),
+                html.Br(),
+                dbc.NavLink([html.I(className="bi bi-file-person-fill ic"),"Sobre Nosotros"],
+                href="/", active="exact"),  
+                html.Br(),
+                html.Br(),
+                html.Br(),
+                dbc.NavLink([html.I(className="bi bi-shield-fill ic"),"Política de privacidad" ],
+                href="/heatmaps", active="exact"),  
+            ],
+            vertical=True,
+            pills=True,
+            className="sidebar"
+        ),
+    ],
+    
+)
 
+footer = html.Footer([
+    html.Hr(),
+    html.Div("Copyright ® Saby 2022 Aviso Legal & Política de Privacidad")
+    ],
+    className="content")
 
 #Main layout
 app.layout = dbc.Container(
@@ -52,6 +68,8 @@ app.layout = dbc.Container(
         navbar,
         sidebar,
         dl.plugins.page_container,
+        footer
+        
     ],
     className="dbc",
     fluid=True,
