@@ -22,6 +22,24 @@ navbar = dbc.NavbarSimple(
     sticky="top",
 )
 
+n= dbc.Navbar(
+    dbc.Container(
+        [
+             html.A(
+                # Use row and col to control vertical alignment of logo / brand
+                dbc.Row(
+                    [
+                        dbc.Col(html.Img(src="./assets/images/logo.png", height="52px")),
+                    ],
+                    className="navbar",
+                ),
+                href="/"
+            ),
+        ]
+    ),
+    sticky="top"
+)
+
 #Creating sidebar, to insert content on page use className : content
 sidebar = html.Div(
     [        
@@ -58,14 +76,17 @@ sidebar = html.Div(
 
 footer = html.Footer([
     html.Hr(),
-    html.Div("Copyright ® Saby 2022 Aviso Legal & Política de Privacidad")
+    html.Div(
+        ["Copyright Saby ® 2022 - ",
+         html.A("Política de Privacidad", href="/heatmaps")] ,
+          style={"text-align" : "center"})
     ],
-    className="content")
+    className="footer")
 
 #Main layout
 app.layout = dbc.Container(
     [
-        navbar,
+        n,
         sidebar,
         dl.plugins.page_container,
         footer

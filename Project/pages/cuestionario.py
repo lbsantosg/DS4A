@@ -29,9 +29,13 @@ carousel = dtc.Carousel([
             html.Div([
                 dbc.Label("Email", html_for="example-email"),
                 dbc.Input(type="email", id="example-email", placeholder="Enter email"),
-                dbc.FormText("Are you on email? You simply have to be these days", color="secondary")     
+                dbc.FormText("Are you on email? You simply have to be these days", color="secondary"),
+                dbc.Label("Slider", html_for="slider"),
+                dcc.Slider(id="slider", min=0, max=10, step=0.5, value=3)
             ]),
-            form_p
+            
+            form_p,
+            slider
           ],
 
         className="card",    

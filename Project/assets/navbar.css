@@ -1,19 +1,12 @@
+div.container{
+    margin-left: 0px;
+}
+
+
 .navbar {
     background-color: #595959 !important;
+    display: flex;
+    align-items: left;
     
 }
 
-a.nav-link{
-    color: #ffffff;    
-    font-size: 20px;
-}
-
-.ic{
-    font-size: 30px;
-    vertical-align: -0.4rem;
-}
-
-ic.nav-link.active, a.nav-link.active{
-    color: #000000 !important;
-    background-color: #ffffff !important;
-}

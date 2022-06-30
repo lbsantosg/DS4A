@@ -4,7 +4,22 @@
     left: 15px;
     bottom: 0;
     padding: 2rem 1rem;
-    width: 16rem;
-    background-color: #a5a5a5 !important;
+    width: 18rem;
+    background-color: #808080 !important;
     
+}
+
+a.nav-link{
+    color: #ffffff;    
+    font-size: 20px;
+}
+
+.ic{
+    font-size: 30px;
+    vertical-align: -0.25rem;
+}
+
+ic.nav-link.active, a.nav-link.active{
+    color: #ffffff !important;
+    background-color: #595959 !important;
 }
