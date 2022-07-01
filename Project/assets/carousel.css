@@ -1,7 +1,17 @@
-.slick-next:before {
-    content: "→" !important;
+.trich_carousel{
+    margin-left: 3rem;
+}
+
+.slick-next:before 
+ {
+    font-weight: 900;
+    content: '>' !important;
 }
 
 .slick-prev:before {
-    content: "←" !important;
+    content: "<" !important;
+}
+
+.tcenter{
+    text-align: center;
 }
