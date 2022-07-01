@@ -19,8 +19,8 @@ def match_maker( **web_input ):
     student_print = get_student_print(score_predictions, parents_perception )
     print(f'********Calculated student print:************\n {student_print}\n\n')
     # top_schools = match_maker(student_print, clean_school[median_global]  )
-    # return [{'name':f'fakeSchool{i}', 'id': i }for i in range(0,10)]
-    return model_input, parents_perception
+    return [{'name':f'fakeSchool{i}', 'id': i }for i in range(0,10)]
+    # return model_input, parents_perception
 
 def get_school(schoolId):
     '''
