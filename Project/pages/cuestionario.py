@@ -31,22 +31,21 @@ carousel = dtc.Carousel([
                 dbc.Input(type="email", id="example-email", placeholder="Enter email"),
                 dbc.FormText("Are you on email? You simply have to be these days", color="secondary"),
                 dbc.Label("Slider", html_for="slider"),
-                dcc.Slider(id="slider", min=0, max=10, step=0.5, value=3)
-            ]),
+                dcc.Slider(id="slider", min=0, max=10, step=1, value=3),
+            ],
+            className="card"),
             
             form_p,
             slider
           ],
 
-        className="card",    
+            
         arrows= True,    
         infinite=False,
         slides_to_show=1,
         slides_to_scroll=1,
         swipe_to_slide=False     
 		)
-
-
 
 layout= dbc.Container(
     [

@@ -10,19 +10,10 @@ import dash_trich_components as dtc
 
 
 # Dash instance declaration , using icons from font awesome
-app = dash.Dash(__name__, plugins=[dl.plugins.pages], external_stylesheets=[dbc.icons.BOOTSTRAP])
+app = dash.Dash(__name__, plugins=[dl.plugins.pages], external_stylesheets=[dbc.icons.BOOTSTRAP, 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'])
 
 #Top navbar
-navbar = dbc.NavbarSimple(
-    [
-        html.A([ html.Img(src="./assets/images/logo.png", height="52px") ],  href="/"     
-    )],
-    dark=True,
-    class_name="",
-    sticky="top",
-)
-
-n= dbc.Navbar(
+navbar= dbc.Navbar(
     dbc.Container(
         [
              html.A(
@@ -53,17 +44,17 @@ sidebar = html.Div(
                 html.Br(),
                 html.Br(),
                 html.Br(),
-                dbc.NavLink([html.I(className="bi bi-house-fill ic"),"Realizar Test"],
+                dbc.NavLink([html.I(className="bi bi-house-fill ic")," Realizar Test"],
                 href="/cuestionario", active="exact"),                                    
                 html.Br(),
                 html.Br(),
                 html.Br(),
-                dbc.NavLink([html.I(className="bi bi-file-person-fill ic"),"Sobre Nosotros"],
+                dbc.NavLink([html.I(className="bi bi-file-person-fill ic")," Sobre Nosotros"],
                 href="/", active="exact"),  
                 html.Br(),
                 html.Br(),
                 html.Br(),
-                dbc.NavLink([html.I(className="bi bi-shield-fill ic"),"Política de privacidad" ],
+                dbc.NavLink([html.I(className="bi bi-shield-fill ic")," Política de privacidad" ],
                 href="/heatmaps", active="exact"),  
             ],
             vertical=True,
@@ -86,7 +77,7 @@ footer = html.Footer([
 #Main layout
 app.layout = dbc.Container(
     [
-        n,
+        navbar,
         sidebar,
         dl.plugins.page_container,
         footer
