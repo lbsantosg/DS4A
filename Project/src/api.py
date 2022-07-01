@@ -1,7 +1,7 @@
-def match_maker():
+def match_maker(COLE_COD_MCPIO_UBICACION,COLE_CALENDARIO,COLE_JORNADA,ESTU_GENERO,FAMI_TIENECOMPUTADOR,FAMI_TIENEINTERNET,FAMI_ESTRATOVIVIENDA,FAMI_CUARTOSHOGAR,FAMI_PERSONASHOGAR,FAMI_EDUCACIONPADRE,FAMI_EDUCACIONMADRE,FAMI_TRABAJOLABORPADRE,FAMI_TRABAJOLABORMADRE,Sociales,Naturales,Matematicas,Lectura,Ingles):
     return [{'name':f'fakeSchool{i}', 'id': i }for i in range(0,10)]
 
-def get_school():
+def get_school(schoolId):
     return {
         'name': 'fakeSchool1',
         'id': '1234',
