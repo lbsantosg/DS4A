@@ -11,3 +11,7 @@
 .slick-prev:before {
     content: "<" !important;
 }
+
+.tcenter{
+    text-align: center;
+}

@@ -11,3 +11,32 @@
     background-color: #595959;
     border-color: #595959;
 }
+
+.btn-outline-primary:not(:disabled):not(.disabled).active, .btn-outline-primary:not(:disabled):not(.disabled):active, .show>.btn-outline-primary.dropdown-toggle {
+    color: #fff;
+    background-color: #595959;
+    border-color: #595959;
+}
+
+.btn-outline-primary {
+    color: #808080;
+    border-color: #808080;
+}
+
+.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+    color: #fff;
+    background-color: #808080;
+    border-color: #808080;
+}
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: #595959;
+    border-color: #595959;
+}
+
+.btn-outline-primary:hover {
+    color: #fff;
+    background-color: #595959;
+    border-color: #595959;
+}
