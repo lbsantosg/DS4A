@@ -1,0 +1,12 @@
+{
+	"COLE_CALENDARIO": ["A", "B"],
+	"COLE_JORNADA": ["COMPLETA_UNICA", "MAÑANA", "TARDE"],
+	"ESTU_GENERO": ["F", "M"],
+	"FAMI_TIENECOMPUTADOR": ["Si", "No"],
+	"FAMI_TIENEINTERNET": ["Si", "No"],
+	"FAMI_ESTRATOVIVIENDA": ["Sin Estrato", "Estrato 3", "Estrato 2", "Estrato 4", "Estrato 1", "Estrato 5", "Estrato 6"],
+	"FAMI_CUARTOSHOGAR": ["Uno", "Dos", "Tres", "Cuatro", "Cinco", "Seis o mas"],
+	"FAMI_PERSONASHOGAR": ["1 a 2", "3 a 4", "5 a 6", "7 a 8", "9 o más"],
+	"FAMI_EDUCACIONPADRE": ["No sabe", "No Aplica", "Ninguno", "Primaria incompleta", "Primaria completa", "Secundaria (Bachillerato) incompleta", "Secundaria (Bachillerato) completa", "Técnica o tecnológica incompleta", "Técnica o tecnológica completa", "Educación profesional incompleta", "Educación profesional completa", "Postgrado"],
+	"FAMI_TRABAJOLABORPADRE": ["No sabe", "No aplica", "Es agricultor, pesquero o jornalero", "Trabaja como personal de limpieza, mantenimiento, seguridad o construcción", "Es operario de máquinas o conduce vehículos (taxita, chofer)", "Es vendedor o trabaja en atención al público", "Trabaja en el hogar, no trabaja o estudia", "Trabaja por cuenta propia (por ejemplo plomero, electricista)", "Tiene un trabajo de tipo auxiliar administrativo (por ejemplo, secretario o asistente)", "Es dueño de un negocio pequeño (tiene pocos empleados o no tiene, por ejemplo tienda, papelería, etc", "Pensionado", "Es dueño de un negocio grande, tiene un cargo de nivel directivo o gerencial", "Trabaja como profesional (por ejemplo médico, abogado, ingeniero)"]
+}
