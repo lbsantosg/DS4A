@@ -16,17 +16,20 @@
     color: #fff;
     background-color: #595959;
     border-color: #595959;
+    font-size: 25px;
 }
 
 .btn-outline-primary {
     color: #808080;
     border-color: #808080;
+    font-size: 25px;
 }
 
 .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
     color: #fff;
     background-color: #808080;
     border-color: #808080;
+    font-size: 25px;
 }
 
 .btn-primary:hover {

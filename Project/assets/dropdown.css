@@ -1,0 +1,43 @@
+.Select-control {
+    background-color: #808080 !important;
+    color: #595959 !important;
+    margin:auto;
+    width: 50%
+}
+
+.Select--single>.Select-control .Select-value, .Select-placeholder {
+   color: #ffffff;
+}     
+
+.has-value.Select--single>.Select-control .Select-value .Select-value-label, .has-value.is-pseudo-focused.Select--single>.Select-control .Select-value .Select-value-label {
+    color: #ffffff;
+}
+
+.is.Open>.Select-control{
+    background-color: #808080;
+    color: #ffffff;
+}
+
+.Select-input{
+    color:#ffffff
+}
+
+.Select--single>.Select-control .Select-value, .Select-placeholder {
+    top: 10px !important
+}
+
+.Select--single>.Select-control .Select-value, .Select-placeholder {
+    bottom: 0;
+    color: #ffffff;
+    left: 0;
+    line-height: 34px;
+    padding-left: 10px;
+    padding-right: 10px;
+    position: absolute;
+    right: 0;
+    top: 10px !important; 
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

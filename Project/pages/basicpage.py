@@ -1,4 +1,4 @@
-#libraries
+""" #libraries
 import dash
 from dash import Dash, html , dcc
 import dash_bootstrap_components as dbc
@@ -25,4 +25,4 @@ layout = dbc.Container(
         ]),
         ],
         className="content"
-)  
+)  """ 
