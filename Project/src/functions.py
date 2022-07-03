@@ -182,21 +182,42 @@ def get_rank(student_print):
     return ranked_print 
 
 def get_euclidean_distance(school, student_vector, areas_data):
+    '''
+    params: 
+        - School df 
+        - Student's print vector
+        - Names of the areas to the school vector can be created with the exact same order     
+    returns: 
+        - distance between vectors
+    '''
     school_vector = [school[area] for area in areas_data]
     euclidean_distance = dist(student_vector, school_vector)
     return euclidean_distance
 
 def calculate_score(school, max_distance, min_distance): 
+    '''
+    params: 
+        - School df 
+        - Max distance among all euclidean distances between school and student print
+        - Min distance among all euclidean distances between school and student print     
+    returns: 
+        - Calculated score - this is the value that defines the likeability of the school 
+    '''
     distance_norm = (max_distance - school['euclidean_distance']) / max(0.0000001,(max_distance - min_distance)) + 1
     score = distance_norm * school['PUNT_GLOBAL']
     return score 
 
 def match(students_print, mun, cal, shift):
     '''
-    1. Get Euclidean distance between vectors
-    2. Normalize distances with rank instead of values
-    3. Normalize school global scores 
-    4. Sort results (sort by distance, then by school score)
+    params: 
+        - ranked student's print dict 
+            key => area (math, science, ...)
+            value => order (rank) of importance for that area 
+        - Municipality code id
+        - School Calendar 
+        - School shift   
+    returns: 
+        - DF of the top 10 schools
     '''
     # FILTER SCHOOLS BY MUN, CAL, SHIFT
     filtered_schools = all_schools[all_schools['COLE_COD_MCPIO_UBICACION'] == int(mun)] 
