@@ -1,16 +1,19 @@
 #Importing libraries
-from gc import callbacks
 from dash import html , dcc, callback
 import dash_bootstrap_components as dbc
 from dash_labs.plugins import register_page
 import dash_trich_components as dtc
 import json
 from dash import Input, Output
+from sqlalchemy import null
 
 #Importing components
 from components.drop_text.dropt import dropt
 from components.slider.slider import slider
 from components.rbutton.rbutton import rbutton
+
+#Importing local API functions
+from src.api import match_maker, get_school
 
 #Registering page path
 register_page(__name__, path="/cuestionario")
@@ -18,22 +21,27 @@ register_page(__name__, path="/cuestionario")
 #Getting json data and definig data variables
 j = open("./data/jsonfiles/demo.json")
 datastore=  json.load(j)
-options= list(datastore["demo_options"])
+options= datastore["demo_options"]
 
 #Defining constants
 radioClass= "radio-group tcenter"
 
 #Defining our data variable
-respuestas=[]
+respuestas={'mun_name': 'Bogotá, D.C.', 'school_calendar': 'B', 'school_shift': 'COMPLETA_UNICA',
+ 'student_gender': 'F', 'has_pc': 'Si', 'has_internet': 'Si', 'economic_stratus': 'Estrato 6',
+  'rooms_house': 'Dos', 'family_members': '3 a 4', 'father_education': 'Educación profesional completa',
+   'mother_education': 'Postgrado', 'father_job': 'Pensionado', 'mother_job': 'Es agricultor, pesquero o jornalero',
+    'perception_socials': 3, 'perception_science': 5, 'perception_math': 5,
+     'perception_reading': 4, 'perception_english': 3}
 
 #Defining multiple forms type for each question
 ciudad= html.Div([
                 dbc.Label("Por favor seleccione el departamento y municipio de interés: "),
                 html.Br(),
                 html.Br(),
-                dcc.Dropdown(options, placeholder='Seleccione el departamento', id='input_departamento', className="drop"),
+                dcc.Dropdown(options=list(options), placeholder='Seleccione el departamento', id='input_departamento', className="drop"),
                 html.Br(),
-                dcc.Dropdown(options, placeholder='Seleccione la ciudad', id='input_ciudad', className="drop"),
+                dcc.Dropdown(options=list(options), placeholder='Seleccione la ciudad', id='input_ciudad', className="drop", disabled=True),
                 html.Br(),
                 html.Br(),
                 html.Br(),
@@ -46,7 +54,7 @@ calendario= html.Div([
                 dbc.Label("Por favor seleccione el calendario de su interés:"),
                 html.Br(),
                 html.Br(),
-                rbutton("iCalendario", {"Calendario A": "a", "Calendario B" : "b"}).display()      
+                rbutton("input_calendario", {"Calendario A": "a", "Calendario B" : "b"}).display()      
                 ],
                 className= radioClass                                             
             )
@@ -55,7 +63,7 @@ jornada= html.Div([
                 dbc.Label("Por favor seleccione la jornada de su interes: "),
                 html.Br(),
                 html.Br(),
-                rbutton("iJornada", {"Mañana": "mañana", "Tarde" : "tarde", "Completa": "completa"}).display()      
+                rbutton("input_jornada", {"Mañana": "mañana", "Tarde" : "tarde", "Completa": "completa"}).display()      
                 ],
                 className= radioClass                          
             )
@@ -64,7 +72,7 @@ genero= html.Div([
                 dbc.Label("Por favor seleccione el género de colegio de su interés: "),
                 html.Br(),
                 html.Br(),
-                rbutton("iGenero", {"Masculino": "m", "Femenino" : "f", "Mixto": "mix"}).display()      
+                rbutton("input_genero", {"Masculino": "m", "Femenino" : "f", "Mixto": "mix"}).display()      
                 ],
                 className=radioClass                           
             )  
@@ -73,7 +81,7 @@ computador= html.Div([
                 dbc.Label("¿En su núcleo familiar, el estudiante tiene acceso a un computador para estudios?"),
                 html.Br(),
                 html.Br(),
-                rbutton("iComputador", {"Si": "si", "No" : "no"}).display()           
+                rbutton("input_computador", {"Si": "si", "No" : "no"}).display()           
                 ],
                 className=radioClass                          
             )  
@@ -82,7 +90,7 @@ internet= html.Div([
                 dbc.Label("¿En su núcleo familiar, el estudiante tiene acceso a internet para estudios?"),
                 html.Br(),
                 html.Br(),
-                rbutton("iInternet", {"Si": "si", "No" : "no"}).display()         
+                rbutton("input_internet", {"Si": "si", "No" : "no"}).display()         
             ],
                 className="radio-group tcenter"                           
             )  
@@ -91,7 +99,7 @@ estrato= html.Div([
                 dbc.Label("¿A cuál estrato pertenece la vivienda de su núcleo familiar?"),
                 html.Br(),
                 html.Br(),
-                rbutton("iComputador", {"Estrato 1": 1, "Estrato 2" : 2, "Estarto 3 ": 3, "Estrato 4": 4, "Estrato 5": 5, "Estrato 6" : 6}).display()         
+                rbutton("input_estrato", {"Estrato 1": 1, "Estrato 2" : 2, "Estarto 3 ": 3, "Estrato 4": 4, "Estrato 5": 5, "Estrato 6" : 6}).display()         
                 ],
                 className=radioClass                          
             )              
@@ -100,14 +108,14 @@ cuartos= html.Div([
                 dbc.Label("¿Cuántas habitaciones hay en su vivienda?"),
                 html.Br(),
                 html.Br(),
-                dbc.Input(type="number", min=1, max=20, step=1, id="styled-numeric-input iCuartos"),                           
+                dbc.Input(type="number", min=1, max=20, step=1, id="input_cuartos", class_name="styled-numeric-input "),                           
             ], className="tcenter" ) 
 
 personas= html.Div([
                 dbc.Label("¿Aparte del estudiante, cuántas personas hay en su núcleo familiar?"),
                 html.Br(),
                 html.Br(),
-                dbc.Input(type="number", min=1, max=20, step=1, id="styled-numeric-input iPersonas"),                            
+                dbc.Input(type="number", min=1, max=20, step=1, id="input_personas", className="styled-numeric-input"),                            
             ], className="tcenter") 
 
 escolaridad= html.Div([
@@ -125,8 +133,9 @@ ocupacion= html.Div([
                 dbc.Label("¿A qué categoría pertenece la labor u ocupación de los padres del estudiante?"),
                 html.Br(),
                 html.Br(),
-                dcc.Dropdown(options, placeholder='Categoría Ocupacion', id='input_ocupación', className="drop"),
+                dcc.Dropdown(options, placeholder='Categoría Ocupacion Padre', id='input_ocu_padre', className="drop"),
                 html.Br(),
+                dcc.Dropdown(options, placeholder='Categoría Ocupacion Madre', id='input_ocu_madre', className="drop"),
                 html.Br()                         
             ],className="tcenter")
                                          
@@ -134,36 +143,47 @@ sociales= html.Div([
                 dbc.Label("En una escala de 1 a 5: ¿Cuál cree que es la afinidad de su hijo con las ciencias sociales?"),
                 html.Br(),
                 html.Br(),
-                slider("vsociales",1,5,1).display()                          
+                slider("input_sociales",1,5,1).display()                          
             ], className="tcenter")     
 
 naturales= html.Div([
                 dbc.Label("En una escala de 1 a 5: ¿Cuál cree que es la afinidad de su hijo con las ciencias naturales?"),
                 html.Br(),
                 html.Br(),
-                slider("vnaturales",1,5,1).display()                          
+                slider("input_naturales",1,5,1).display()                          
             ], className="tcenter")     
 
 matematicas= html.Div([
                 dbc.Label("En una escala de 1 a 5: ¿Cuál cree que es la afinidad de su hijo con las matemáticas?"),
                 html.Br(),
                 html.Br(),
-                slider("vmatematicas",1,5,1).display()                            
+                slider("input_matematicas",1,5,1).display()                            
             ], className="tcenter")                
 
 lectura= html.Div([
                 dbc.Label("En una escala de 1 a 5: ¿Cuál cree que es la afinidad de su hijo con la lectura?") ,
                 html.Br(),
                 html.Br(),
-                slider("vlectura",1,5,1).display()                            
+                slider("input_lectura",1,5,1).display()                            
             ], className="tcenter")     
 
 ingles= html.Div([
                 dbc.Label("En una escala de 1 a 5: ¿Cuál cree que es la afinidad de su hijo con el idioma inglés?"),
                 html.Br(),
                 html.Br(),
-                slider("vingles",1,5,1).display()                            
+                slider("input_ingles",1,5,1).display()                            
             ], className="tcenter")             
+
+reserva= html.Div(id="reserva",hidden=True)
+
+calcular= html.Div([
+    reserva,
+    dbc.Button(
+        "Calcular Resultados",
+        id="calcular",        
+    )
+],className="tcenter")
+
 
 #Establishing carousel with questions
 carousel = dtc.Carousel([
@@ -182,7 +202,8 @@ carousel = dtc.Carousel([
             naturales,
             matematicas,
             lectura,
-            ingles            
+            ingles,
+            calcular            
         ],            
         arrows= True,    
         infinite=False,
@@ -201,10 +222,65 @@ layout= dbc.Container(
     fluid=True,
 )
 
-#Establishing callbacks
+#**Establishing callbacks**
+
+#Changing city dropdown options when selecting department
 @callback(
-    Output('dd-output-container', 'children'),
-    Input('demo-dropdown', 'value')
+    [Output('input_ciudad', 'disabled'),
+    Output('input_ciudad', 'options')],
+    [Input('input_departamento', 'value')]
 )
 def update_output(value):
-    return f'You have selected {value}'
+
+    if value == 'Seleccione el departamento' or value == "" or value == None:
+        return [True, list(options)]
+    else:
+        return [False, options[value]]
+
+#--Adding  user inputs into answers variable--
+
+@callback(
+    Output('reserva','children'),
+    [Input('input_ciudad', 'value'),
+    Input('input_calendario', 'value'),
+    Input('input_jornada', 'value'),
+    Input('input_genero', 'value'),
+    Input('input_computador', 'value'),
+    Input('input_internet', 'value'),
+    Input('input_estrato', 'value'),
+    Input('input_cuartos', 'value'),
+    Input('input_personas', 'value'),
+    Input('input_esco_padre', 'value'),
+    Input('input_esco_madre', 'value'),
+    Input('input_ocu_padre', 'value'),
+    Input('input_ocu_madre', 'value'),
+    Input('input_sociales', 'value'),
+    Input('input_naturales', 'value'),
+    Input('input_matematicas', 'value'),
+    Input('input_lectura', 'value'),
+    Input('input_ingles', 'value'),
+
+    ]
+)
+def change_data(ciudad,calendario,jornada,genero,computador,internet,estrato,cuartos,personas,esco_padre,esco_madre,ocu_padre,ocu_madre,sociales,naturales,matematicas,lectura,ingles):
+
+        respuestas['mun_name'] = ciudad
+        respuestas['school_calendar'] = calendario
+        respuestas['school_shift'] = jornada
+        respuestas['student_gender'] = genero
+        respuestas['has_pc'] = computador
+        respuestas['has_internet'] = internet
+        respuestas['economic_stratus'] = estrato
+        respuestas['rooms_house'] = cuartos
+        respuestas['family_members'] = personas
+        respuestas['father_education'] = esco_padre
+        respuestas['mother_education'] = esco_madre
+        respuestas['father_job'] = ocu_padre
+        respuestas['mother_job'] = ocu_madre
+        respuestas['perception_socials'] = sociales
+        respuestas['perception_science'] = naturales
+        respuestas['perception_math'] = matematicas
+        respuestas['perception_reading'] = lectura
+        respuestas['perception_english'] = ingles
+        print(respuestas)
+        return str(respuestas)

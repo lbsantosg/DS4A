@@ -1,5 +1,4 @@
-from functions import * 
-clean_school = [] #read from csv 
+from src.functools import get_max_edu, get_max_job, get_predictions, get_student_print,map_inputs 
 
 def match_maker( **web_input ):
     '''
