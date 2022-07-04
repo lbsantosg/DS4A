@@ -10,7 +10,7 @@ import dash_trich_components as dtc
 
 
 # Dash instance declaration , using icons from font awesome
-app = dash.Dash(__name__, plugins=[dl.plugins.pages], external_stylesheets=[dbc.icons.BOOTSTRAP, 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'])
+app = dash.Dash(__name__, plugins=[dl.plugins.pages], external_stylesheets=[dbc.icons.BOOTSTRAP, 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'], suppress_callback_exceptions=True)
 
 #Top navbar
 navbar= dbc.Navbar(
@@ -55,7 +55,7 @@ sidebar = html.Div(
                 html.Br(),
                 html.Br(),
                 dbc.NavLink([html.I(className="bi bi-shield-fill ic")," Política de privacidad" ],
-                href="/heatmaps", active="exact"),  
+                href="/politica_privacidad", active="exact"),  
             ],
             vertical=True,
             pills=True,
@@ -69,7 +69,7 @@ footer = html.Footer([
     html.Hr(),
     html.Div(
         ["Copyright Saby ® 2022 - ",
-         html.A("Política de Privacidad", href="/heatmaps")] ,
+         html.A("Política de Privacidad", href="/politica_privacidad")] ,
           style={"text-align" : "center"})
     ],
     className="footer")

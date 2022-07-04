@@ -17,8 +17,8 @@ class rbutton:
                     labelClassName="btn btn-outline-primary",
                     labelCheckedClassName="active",
                     options=[
-                        {"label": item[0], "value": item[1]}
-                        for item in self.options.items()
+                        {"label": item, "value": item}
+                        for item in self.options
                         ],
                     
                 )

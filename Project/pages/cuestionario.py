@@ -1,10 +1,11 @@
 #Importing libraries
+from this import d
 from dash import html , dcc, callback
 import dash_bootstrap_components as dbc
 from dash_labs.plugins import register_page
 import dash_trich_components as dtc
 import json
-from dash import Input, Output
+from dash import Input, Output, State
 from sqlalchemy import null
 
 #Importing components
@@ -23,11 +24,15 @@ j = open("./data/jsonfiles/demo.json")
 datastore=  json.load(j)
 options= datastore["demo_options"]
 
+f= open("./data/jsonfiles/fields.json")
+fields= json.load(f)
+
+
 #Defining constants
 radioClass= "radio-group tcenter"
 
 #Defining our data variable
-respuestas={'mun_name': 'Bogotá, D.C.', 'school_calendar': 'B', 'school_shift': 'COMPLETA_UNICA',
+respuestas={'dep_name': 'Antioquia','mun_name': 'Bogotá, D.C.', 'school_calendar': 'B', 'school_shift': 'COMPLETA_UNICA',
  'student_gender': 'F', 'has_pc': 'Si', 'has_internet': 'Si', 'economic_stratus': 'Estrato 6',
   'rooms_house': 'Dos', 'family_members': '3 a 4', 'father_education': 'Educación profesional completa',
    'mother_education': 'Postgrado', 'father_job': 'Pensionado', 'mother_job': 'Es agricultor, pesquero o jornalero',
@@ -63,7 +68,7 @@ jornada= html.Div([
                 dbc.Label("Por favor seleccione la jornada de su interes: "),
                 html.Br(),
                 html.Br(),
-                rbutton("input_jornada", {"Mañana": "mañana", "Tarde" : "tarde", "Completa": "completa"}).display()      
+                rbutton("input_jornada", {"Mañana": "mañana", "Tarde" : "tarde", "Completa": "Completa_Unica"}).display()      
                 ],
                 className= radioClass                          
             )
@@ -72,7 +77,7 @@ genero= html.Div([
                 dbc.Label("Por favor seleccione el género de colegio de su interés: "),
                 html.Br(),
                 html.Br(),
-                rbutton("input_genero", {"Masculino": "m", "Femenino" : "f", "Mixto": "mix"}).display()      
+                rbutton("input_genero", {"Masculino": "M", "Femenino" : "F"}).display()      
                 ],
                 className=radioClass                           
             )  
@@ -81,7 +86,7 @@ computador= html.Div([
                 dbc.Label("¿En su núcleo familiar, el estudiante tiene acceso a un computador para estudios?"),
                 html.Br(),
                 html.Br(),
-                rbutton("input_computador", {"Si": "si", "No" : "no"}).display()           
+                rbutton("input_computador", {"Si": "Si", "No" : "No"}).display()           
                 ],
                 className=radioClass                          
             )  
@@ -90,7 +95,7 @@ internet= html.Div([
                 dbc.Label("¿En su núcleo familiar, el estudiante tiene acceso a internet para estudios?"),
                 html.Br(),
                 html.Br(),
-                rbutton("input_internet", {"Si": "si", "No" : "no"}).display()         
+                rbutton("input_internet", {"Si": "Si", "No" : "No"}).display()         
             ],
                 className="radio-group tcenter"                           
             )  
@@ -99,7 +104,7 @@ estrato= html.Div([
                 dbc.Label("¿A cuál estrato pertenece la vivienda de su núcleo familiar?"),
                 html.Br(),
                 html.Br(),
-                rbutton("input_estrato", {"Estrato 1": 1, "Estrato 2" : 2, "Estarto 3 ": 3, "Estrato 4": 4, "Estrato 5": 5, "Estrato 6" : 6}).display()         
+                rbutton("input_estrato", fields["FAMI_ESTRATOVIVIENDA"]).display()         
                 ],
                 className=radioClass                          
             )              
@@ -108,14 +113,14 @@ cuartos= html.Div([
                 dbc.Label("¿Cuántas habitaciones hay en su vivienda?"),
                 html.Br(),
                 html.Br(),
-                dbc.Input(type="number", min=1, max=20, step=1, id="input_cuartos", class_name="styled-numeric-input "),                           
+               rbutton("input_cuartos", fields["FAMI_CUARTOSHOGAR"]).display()   ,                           
             ], className="tcenter" ) 
 
 personas= html.Div([
                 dbc.Label("¿Aparte del estudiante, cuántas personas hay en su núcleo familiar?"),
                 html.Br(),
                 html.Br(),
-                dbc.Input(type="number", min=1, max=20, step=1, id="input_personas", className="styled-numeric-input"),                            
+               rbutton("input_personas", fields["FAMI_PERSONASHOGAR"]).display(),                            
             ], className="tcenter") 
 
 escolaridad= html.Div([
@@ -176,13 +181,31 @@ ingles= html.Div([
 
 reserva= html.Div(id="reserva",hidden=True)
 
+modal= dbc.Modal(
+            [
+                dbc.ModalHeader(dbc.ModalTitle("Resultados"),class_name="mheader"),
+                dbc.ModalBody("This is the content of the modal"),
+                dbc.ModalFooter(
+                    dbc.Button(
+                        "Cerrar", id="close", className="ms-auto", n_clicks=0
+                    )
+                ),
+            ],
+            id="modal",
+            className='modal-lg',
+            is_open=False,
+        )
+
 calcular= html.Div([
     reserva,
+    modal,
     dbc.Button(
         "Calcular Resultados",
         id="calcular",        
     )
 ],className="tcenter")
+
+
 
 
 #Establishing carousel with questions
@@ -241,7 +264,9 @@ def update_output(value):
 
 @callback(
     Output('reserva','children'),
-    [Input('input_ciudad', 'value'),
+    [
+    Input('input_departamento', 'value'),
+    Input('input_ciudad', 'value'),
     Input('input_calendario', 'value'),
     Input('input_jornada', 'value'),
     Input('input_genero', 'value'),
@@ -262,8 +287,9 @@ def update_output(value):
 
     ]
 )
-def change_data(ciudad,calendario,jornada,genero,computador,internet,estrato,cuartos,personas,esco_padre,esco_madre,ocu_padre,ocu_madre,sociales,naturales,matematicas,lectura,ingles):
+def change_data(departamento,ciudad,calendario,jornada,genero,computador,internet,estrato,cuartos,personas,esco_padre,esco_madre,ocu_padre,ocu_madre,sociales,naturales,matematicas,lectura,ingles):
 
+        respuestas['dep_name']= departamento
         respuestas['mun_name'] = ciudad
         respuestas['school_calendar'] = calendario
         respuestas['school_shift'] = jornada
@@ -282,5 +308,27 @@ def change_data(ciudad,calendario,jornada,genero,computador,internet,estrato,cua
         respuestas['perception_math'] = matematicas
         respuestas['perception_reading'] = lectura
         respuestas['perception_english'] = ingles
-        print(respuestas)
+
         return str(respuestas)
+
+
+#Creating button callback to print results:
+@callback(
+    Output('reserva','hidden'),
+    Input('calcular', 'n_clicks'),
+
+)
+def calculate_print(btn):
+    print(match_maker(respuestas))
+    return True
+
+    
+@callback(
+    Output("modal", "is_open"),
+    [Input("calcular", "n_clicks"), Input("close", "n_clicks")] ,
+    [State("modal", "is_open")],
+)
+def toggle_modal(n1, n2, is_open):
+    if n1 or n2:
+        return not is_open
+    return is_open

@@ -14,7 +14,8 @@ register_page(__name__, path="/")
 
 
 
-layout=  dbc.DropdownMenu(
+layout=  dbc.Container([
+    dbc.DropdownMenu(
     
     [        
         dbc.DropdownMenuItem(option)
@@ -23,5 +24,5 @@ layout=  dbc.DropdownMenu(
     label = "Test Menu",
     menu_variant="dark",
     className="content"
-    
 )
+])

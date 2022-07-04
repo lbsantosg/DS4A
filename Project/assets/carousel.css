@@ -94,3 +94,8 @@
 #reserva{
     height: 0%;
 }
+
+.modal-header{
+    background-color: #595959;
+    color: #ffffff;
+  }

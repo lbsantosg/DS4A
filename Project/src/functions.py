@@ -5,21 +5,21 @@ import statsmodels.api as sm
 import random
 
 # Load dataframes
-divipola  = pd.read_csv("data/Divipola.csv", engine='python', sep = ';').set_index(['Departamento','Municipio'])
-Edu       = pd.read_csv("data/Edu.csv", engine='python', sep = ';')
-Labor     = pd.read_csv("data/Labor.csv", engine='python', sep = ';')
-all_schools = pd.read_csv("data/final_schools.csv", engine='python', sep = ',')
+divipola  = pd.read_csv("src/data/Divipola.csv", engine='python', sep = ';').set_index(['Departamento','Municipio'])
+Edu       = pd.read_csv("src/data/Edu.csv", engine='python', sep = ';')
+Labor     = pd.read_csv("src/data/Labor.csv", engine='python', sep = ';')
+all_schools = pd.read_csv("src/data/final_schools.csv", engine='python', sep = ',')
 
 # Load Model Coefficients
-B_PUNT_GLOBAL = pd.read_csv("data/B_PUNT_GLOBAL.csv", engine='python', sep = ',')
-B_PUNT_SOC    = pd.read_csv("data/B_PUNT_SOC.csv", engine='python', sep = ',')
-B_PUNT_C_NAT  = pd.read_csv("data/B_PUNT_C_NAT.csv", engine='python', sep = ',')
-B_PUNT_MAT    = pd.read_csv("data/B_PUNT_MAT.csv", engine='python', sep = ',')
-B_PUNT_LECT   = pd.read_csv("data/B_PUNT_LECT.csv", engine='python', sep = ',')
-B_PUNT_ING    = pd.read_csv("data/B_PUNT_ING.csv", engine='python', sep = ',')    
+B_PUNT_GLOBAL = pd.read_csv("src/data/B_PUNT_GLOBAL.csv", engine='python', sep = ',')
+B_PUNT_SOC    = pd.read_csv("src/data/B_PUNT_SOC.csv", engine='python', sep = ',')
+B_PUNT_C_NAT  = pd.read_csv("src/data/B_PUNT_C_NAT.csv", engine='python', sep = ',')
+B_PUNT_MAT    = pd.read_csv("src/data/B_PUNT_MAT.csv", engine='python', sep = ',')
+B_PUNT_LECT   = pd.read_csv("src/data/B_PUNT_LECT.csv", engine='python', sep = ',')
+B_PUNT_ING    = pd.read_csv("src/data/B_PUNT_ING.csv", engine='python', sep = ',')    
 
 # Load Max/Min school records
-Punt_MinMax    = pd.read_csv("data/Punt_MinMax.csv", engine='python', sep = ',')
+Punt_MinMax    = pd.read_csv("src/data/Punt_MinMax.csv", engine='python', sep = ',')
 
 def filter_school(id): 
     school = all_schools[all_schools['COLE_COD_DANE_ESTABLECIMIENTO'] == int(id)]
