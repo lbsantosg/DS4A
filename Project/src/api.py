@@ -1,4 +1,6 @@
-from src.functools import get_max_edu, get_max_job, get_predictions, get_student_print,map_inputs 
+from src.functions import * 
+import pandas as pd 
+clean_school = [] #read from csv 
 
 def match_maker( **web_input ):
     '''
@@ -17,49 +19,25 @@ def match_maker( **web_input ):
     print(f'********Predicted students score:************\n {score_predictions}\n\n')
     student_print = get_student_print(score_predictions, parents_perception )
     print(f'********Calculated student print:************\n {student_print}\n\n')
-    # top_schools = match_maker(student_print, clean_school[median_global]  )
-    return [{'name':f'fakeSchool{i}', 'id': i }for i in range(0,10)]
-    # return model_input, parents_perception
+    ranked_print = get_rank(student_print)
+    print(f'********Calculated ranked print:************\n {ranked_print}\n\n')
+    top_schools = match(ranked_print, model_input['COLE_COD_MCPIO_UBICACION'], model_input['COLE_CALENDARIO'], model_input['COLE_JORNADA'])
+    return top_schools
 
 def get_school(schoolId):
     '''
     1. Filtrar colegio por id
     2. Retornar detalles del colegio 
     '''
-    return {
-        'name': 'fakeSchool1',
-        'id': '1234',
-        'email': 'mail@mail.com',
-        'phone': '123456789',
-        'math': {
-            '2017': 24,
-            '2018': 34,
-            '2020': 50,
-            '2021': 56
-        },
-        'reading': {
-            '2017': 28,
-            '2018': 38,
-            '2020': 58,
-            '2021': 58
-        },
-        'science': {
-            '2017': 84,
-            '2018': 84,
-            '2020': 80,
-            '2021': 86
-        },
-        'features': {
-            'languages': ['ALEMAN','INGLES']
-        }
-    }
+    return filter_school(schoolId)
 
 # TEST API
 mock_input = {
-    'mun_name' : 'Bogotá, D.C.',
-    'school_calendar': 'B', 
+    'dep_name': 'Antioquia',
+    'mun_name' : 'Medellín',
+    'school_calendar': 'A', 
     'school_shift': 'COMPLETA_UNICA', 
-    'student_gender': 'F', 
+    'student_gender': 'OTRO', 
     'has_pc': 'Si', 
     'has_internet': 'Si',
     'economic_stratus': 'Estrato 6' ,
@@ -75,4 +53,6 @@ mock_input = {
     'perception_reading': 4,
     'perception_english': 3
 }
-test = match_maker(**mock_input)
+top_schools = match_maker(**mock_input)
+print (pd.DataFrame(top_schools))
+print(get_school(305001014248))
