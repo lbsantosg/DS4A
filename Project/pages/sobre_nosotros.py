@@ -10,9 +10,9 @@ import dash_trich_components as dtc
 
 layout=dbc.Container([
     dtc.Carousel([
-         person_card("Carlos Bejarano", "Inegeniero Sistemas e Informática", "./assets/images/carlos.jpg","https://www.linkedin.com/in/carlos-bejarano-3b04b21b3/").display(),
+         person_card("Carlos Bejarano", "Ingeniero Sistemas e Informática", "./assets/images/carlos.jpg","https://www.linkedin.com/in/carlos-bejarano-3b04b21b3/").display(),
          person_card("Dorges Higgins","Ingeniero de petroleos","./assets/images/dorges.jpg","https://www.linkedin.com/in/dorges-higgins").display(),
-         person_card("Daniel Peñaranda","Ingeniero Agroindutrial","./assets/images/daniel.jpg","https://www.linkedin.com/in/depenarandap/").display(),
+         person_card("Daniel Peñaranda","Ingeniero Agroindustrial","./assets/images/daniel.jpg","https://www.linkedin.com/in/depenarandap/").display(),
          person_card("Laura Santos","Ingeniera Sistemas e Informática","./assets/images/laura.jpg","https://www.linkedin.com/in/laura-santos-guerrero-b3ba82170/").display(),
          person_card("Carlos Vergara","Magister en Economía","./assets/images/andres.jpg","https://www.linkedin.com/in/carlosandresvergara/").display()
     ],autoplay=True)  

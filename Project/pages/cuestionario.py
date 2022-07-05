@@ -24,7 +24,7 @@ j = open("./data/jsonfiles/demo.json")
 datastore=  json.load(j)
 options= datastore["demo_options"]
 
-f= open("./data/jsonfiles/fields.json")
+f= open("./data/jsonfiles/fields.json", encoding='utf-8')
 fields= json.load(f)
 
 
@@ -74,7 +74,7 @@ jornada= html.Div([
             )
 
 genero= html.Div([
-                dbc.Label("Por favor seleccione el género de colegio de su interés: "),
+                dbc.Label("Por favor seleccione el sexo de su hijo"),
                 html.Br(),
                 html.Br(),
                 rbutton("input_genero", {"Masculino": "M", "Femenino" : "F"}).display()      
@@ -127,9 +127,9 @@ escolaridad= html.Div([
                 dbc.Label("¿Cuál es el nivel máximo de escolaridad alcanzado por los padres del estudiante?"),
                 html.Br(),
                 html.Br(),
-                dcc.Dropdown(options, placeholder='Escolaridad Padre', id='input_esco_padre', className="drop"),
+                dcc.Dropdown(fields["FAMI_EDUCACIONPADRE"], placeholder='Escolaridad Padre', id='input_esco_padre', className="drop"),
                 html.Br(),
-                dcc.Dropdown(options, placeholder='Escolaridad Madre', id='input_esco_madre', className="drop"), 
+                dcc.Dropdown(fields["FAMI_EDUCACIONPADRE"], placeholder='Escolaridad Madre', id='input_esco_madre', className="drop"), 
                 html.Br(),           
                 html.Br(),
             ],className="tcenter") 
@@ -138,9 +138,9 @@ ocupacion= html.Div([
                 dbc.Label("¿A qué categoría pertenece la labor u ocupación de los padres del estudiante?"),
                 html.Br(),
                 html.Br(),
-                dcc.Dropdown(options, placeholder='Categoría Ocupacion Padre', id='input_ocu_padre', className="drop"),
+                dcc.Dropdown(fields["FAMI_TRABAJOLABORPADRE"], placeholder='Categoría Ocupacion Padre', id='input_ocu_padre', className="drop"),
                 html.Br(),
-                dcc.Dropdown(options, placeholder='Categoría Ocupacion Madre', id='input_ocu_madre', className="drop"),
+                dcc.Dropdown(fields["FAMI_TRABAJOLABORPADRE"], placeholder='Categoría Ocupacion Madre', id='input_ocu_madre', className="drop"),
                 html.Br()                         
             ],className="tcenter")
                                          

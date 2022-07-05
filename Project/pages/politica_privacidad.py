@@ -19,8 +19,8 @@ layout= dbc.Container([
         html.Br(),
         html.H3("Control de su información personal"),
         html.P("Esta compañía no venderá, cederá ni distribuirá la información personal que es recopilada sin su consentimiento, salvo que sea requerido por un juez con un orden judicial.", className="justi"),
-        html.P("Saby Se reserva el derecho de cambiar los términos de la presente Política de Privacidad en cualquier momento.", className="justi")
-
+        html.P("Saby Se reserva el derecho de cambiar los términos de la presente Política de Privacidad en cualquier momento.", className="justi"),
+        html.Br()
     ],className="content politics")
     
 ], fluid="True")
