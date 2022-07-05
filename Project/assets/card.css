@@ -1,0 +1,19 @@
+
+
+.trich_card .card .trich_card_img img {
+     max-width: 50%;
+     margin-left: 25%; 
+}
+
+.trich_card .card .trich_card_text {
+    text-align: center;
+}
+
+.trich_card .card .trich_card_footer {
+    height: 0px !important;
+}
+
+.card_row{
+    margin-top: 0%;
+}
+

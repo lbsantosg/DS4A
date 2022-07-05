@@ -4,6 +4,7 @@ from dash import html
 import dash_bootstrap_components as dbc
 
 class kpibadge:
+    
     def __init__(self,kpi,label, badgetype):
         self.kpi = kpi
         self.label = label
