@@ -53,6 +53,25 @@ mock_input = {
     'perception_reading': 4,
     'perception_english': 3
 }
-top_schools = match_maker(**mock_input)
+resp={'dep_name': 'Atlántico',
+    'mun_name': 'Campo de La Cruz',
+    'school_calendar': 'B',
+    'school_shift': 'Tarde',
+    'student_gender': 'F',
+    'has_pc': 'Si',
+    'has_internet': 'Si',
+    'economic_stratus': 'Estrato 3',
+    'rooms_house': 'Cuatro',
+    'family_members': '5 a 6',
+    'father_education': 'Primaria incompleta',
+    'mother_education': 'Secundaria (Bachillerato) incompleta',
+    'father_job': 'Trabaja por cuenta propia (por ejemplo plomero, electricista)',
+    'mother_job': 'Tiene un trabajo de tipo auxiliar administrativo (por ejemplo, secretario o asistente)',
+    'perception_socials': 4,
+    'perception_science': 3,
+    'perception_math': 2,
+    'perception_reading': 4,
+    'perception_english': 4}
+top_schools = match_maker(**resp)
 print (pd.DataFrame(top_schools))
-print(get_school(305001014248))
+#print(get_school(305001014248))

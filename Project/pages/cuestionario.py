@@ -1,17 +1,18 @@
 #Importing libraries
-from this import d
 from dash import html , dcc, callback
 import dash_bootstrap_components as dbc
 from dash_labs.plugins import register_page
 import dash_trich_components as dtc
 import json
 from dash import Input, Output, State
-from sqlalchemy import null
+import pandas as pd
+
 
 #Importing components
 from components.drop_text.dropt import dropt
 from components.slider.slider import slider
 from components.rbutton.rbutton import rbutton
+from components.plot_podium.plot_podium import PlotPodium
 
 #Importing local API functions
 from src.api import match_maker, get_school
@@ -24,9 +25,13 @@ j = open("./data/jsonfiles/demo.json")
 datastore=  json.load(j)
 options= datastore["demo_options"]
 
-f= open("./data/jsonfiles/fields.json", encoding='utf-8')
+f= open("./data/jsonfiles/fields.json", encoding='utf-8') 
 fields= json.load(f)
 
+#Getting csv data
+file= './src/data/Divipola.csv'
+places= pd.read_csv(file, header=0,sep=';')
+departamentos=list(places["Departamento"].drop_duplicates())
 
 #Defining constants
 radioClass= "radio-group tcenter"
@@ -38,13 +43,33 @@ respuestas={'dep_name': 'Antioquia','mun_name': 'Bogotá, D.C.', 'school_calenda
    'mother_education': 'Postgrado', 'father_job': 'Pensionado', 'mother_job': 'Es agricultor, pesquero o jornalero',
     'perception_socials': 3, 'perception_science': 5, 'perception_math': 5,
      'perception_reading': 4, 'perception_english': 3}
-
+mock_input = {
+    'dep_name': 'Antioquia',
+    'mun_name' : 'Medellín',
+    'school_calendar': 'A', 
+    'school_shift': 'COMPLETA_UNICA', 
+    'student_gender': 'OTRO', 
+    'has_pc': 'Si', 
+    'has_internet': 'Si',
+    'economic_stratus': 'Estrato 6' ,
+    'rooms_house': 'Dos',
+    'family_members': '3 a 4', 
+    'father_education': 'Educación profesional completa',
+    'mother_education': 'Postgrado',
+    'father_job': 'Pensionado', 
+    'mother_job': 'Es agricultor, pesquero o jornalero', 
+    'perception_socials': 3,
+    'perception_science': 5,
+    'perception_math': 5, 
+    'perception_reading': 4,
+    'perception_english': 3
+}
 #Defining multiple forms type for each question
 ciudad= html.Div([
                 dbc.Label("Por favor seleccione el departamento y municipio de interés: "),
                 html.Br(),
                 html.Br(),
-                dcc.Dropdown(options=list(options), placeholder='Seleccione el departamento', id='input_departamento', className="drop"),
+                dcc.Dropdown(options=departamentos, placeholder='Seleccione el departamento', id='input_departamento', className="drop"),
                 html.Br(),
                 dcc.Dropdown(options=list(options), placeholder='Seleccione la ciudad', id='input_ciudad', className="drop", disabled=True),
                 html.Br(),
@@ -68,7 +93,7 @@ jornada= html.Div([
                 dbc.Label("Por favor seleccione la jornada de su interes: "),
                 html.Br(),
                 html.Br(),
-                rbutton("input_jornada", {"Mañana": "mañana", "Tarde" : "tarde", "Completa": "Completa_Unica"}).display()      
+                rbutton("input_jornada", {"Mañana": "mañana", "Tarde" : "tarde", "Completa": "COMPLETA_UNICA"}).display()      
                 ],
                 className= radioClass                          
             )
@@ -77,7 +102,7 @@ genero= html.Div([
                 dbc.Label("Por favor seleccione el sexo de su hijo"),
                 html.Br(),
                 html.Br(),
-                rbutton("input_genero", {"Masculino": "M", "Femenino" : "F"}).display()      
+                rbutton("input_genero", {"Masculino": "M", "Femenino" : "F", "Otro":"OTRO"}).display()      
                 ],
                 className=radioClass                           
             )  
@@ -181,10 +206,14 @@ ingles= html.Div([
 
 reserva= html.Div(id="reserva",hidden=True)
 
+grafico= PlotPodium(match_maker(**mock_input))
+
 modal= dbc.Modal(
             [
                 dbc.ModalHeader(dbc.ModalTitle("Resultados"),class_name="mheader"),
-                dbc.ModalBody("This is the content of the modal"),
+                dbc.ModalBody([
+#                    dcc.Graph(figure=grafico.plot_podium())
+                ]),
                 dbc.ModalFooter(
                     dbc.Button(
                         "Cerrar", id="close", className="ms-auto", n_clicks=0
@@ -204,9 +233,6 @@ calcular= html.Div([
         id="calcular",        
     )
 ],className="tcenter")
-
-
-
 
 #Establishing carousel with questions
 carousel = dtc.Carousel([
@@ -256,9 +282,9 @@ layout= dbc.Container(
 def update_output(value):
 
     if value == 'Seleccione el departamento' or value == "" or value == None:
-        return [True, list(options)]
+        return [True, options]
     else:
-        return [False, options[value]]
+        return [False, list(places["Municipio"].where(places['Departamento']==value).dropna())]
 
 #--Adding  user inputs into answers variable--
 
@@ -319,7 +345,8 @@ def change_data(departamento,ciudad,calendario,jornada,genero,computador,interne
 
 )
 def calculate_print(btn):
-    print(match_maker(respuestas))
+    print(respuestas)
+
     return True
 
     

@@ -232,7 +232,8 @@ def match(students_print, mun, cal, shift):
                 'lectura_critica_rank',             
                 'ingles_rank')
     student_vector = [students_print[area] for area in areas]
-
+    print("Stydente vector", student_vector)
+    #print(filtered_schools.apply(lambda x : get_euclidean_distance(x, student_vector, areas_data), axis=1))
     filtered_schools['euclidean_distance'] = filtered_schools.apply(lambda x : get_euclidean_distance(x, student_vector, areas_data), axis=1)
     max_distance = filtered_schools['euclidean_distance'].max()
     min_distance = filtered_schools['euclidean_distance'].min()
