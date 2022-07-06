@@ -2,24 +2,23 @@ from math import dist
 import numpy as np
 import pandas as pd
 import statsmodels.api as sm
-import random
 
 # Load dataframes
-divipola  = pd.read_csv("src/data/Divipola.csv", engine='python', sep = ';').set_index(['Departamento','Municipio'])
-Edu       = pd.read_csv("src/data/Edu.csv", engine='python', sep = ';')
-Labor     = pd.read_csv("src/data/Labor.csv", engine='python', sep = ';')
-all_schools = pd.read_csv("src/data/final_schools.csv", engine='python', sep = ',')
+divipola  = pd.read_csv("/home/laura/Documents/DS4A/Project/src/data/Divipola.csv", engine='python', sep = ';').set_index(['Departamento','Municipio'])
+Edu       = pd.read_csv("/home/laura/Documents/DS4A/Project/src/data/Edu.csv", engine='python', sep = ';')
+Labor     = pd.read_csv("/home/laura/Documents/DS4A/Project/src/data/Labor.csv", engine='python', sep = ';')
+all_schools = pd.read_csv("/home/laura/Documents/DS4A/Project/src/data/final_schools.csv", engine='python', sep = ',')
 
 # Load Model Coefficients
-B_PUNT_GLOBAL = pd.read_csv("src/data/B_PUNT_GLOBAL.csv", engine='python', sep = ',')
-B_PUNT_SOC    = pd.read_csv("src/data/B_PUNT_SOC.csv", engine='python', sep = ',')
-B_PUNT_C_NAT  = pd.read_csv("src/data/B_PUNT_C_NAT.csv", engine='python', sep = ',')
-B_PUNT_MAT    = pd.read_csv("src/data/B_PUNT_MAT.csv", engine='python', sep = ',')
-B_PUNT_LECT   = pd.read_csv("src/data/B_PUNT_LECT.csv", engine='python', sep = ',')
-B_PUNT_ING    = pd.read_csv("src/data/B_PUNT_ING.csv", engine='python', sep = ',')    
+B_PUNT_GLOBAL = pd.read_csv("/home/laura/Documents/DS4A/Project/src/data/B_PUNT_GLOBAL.csv", engine='python', sep = ',')
+B_PUNT_SOC    = pd.read_csv("/home/laura/Documents/DS4A/Project/src/data/B_PUNT_SOC.csv", engine='python', sep = ',')
+B_PUNT_C_NAT  = pd.read_csv("/home/laura/Documents/DS4A/Project/src/data/B_PUNT_C_NAT.csv", engine='python', sep = ',')
+B_PUNT_MAT    = pd.read_csv("/home/laura/Documents/DS4A/Project/src/data/B_PUNT_MAT.csv", engine='python', sep = ',')
+B_PUNT_LECT   = pd.read_csv("/home/laura/Documents/DS4A/Project/src/data/B_PUNT_LECT.csv", engine='python', sep = ',')
+B_PUNT_ING    = pd.read_csv("/home/laura/Documents/DS4A/Project/src/data/B_PUNT_ING.csv", engine='python', sep = ',')    
 
 # Load Max/Min school records
-Punt_MinMax    = pd.read_csv("src/data/Punt_MinMax.csv", engine='python', sep = ',')
+#Punt_MinMax    = pd.read_csv("src/data/Punt_MinMax.csv", engine='python', sep = ',')
 
 def filter_school(id): 
     school = all_schools[all_schools['COLE_COD_DANE_ESTABLECIMIENTO'] == int(id)]
@@ -191,6 +190,7 @@ def get_euclidean_distance(school, student_vector, areas_data):
         - distance between vectors
     '''
     school_vector = [school[area] for area in areas_data]
+    print(school_vector)
     euclidean_distance = dist(student_vector, school_vector)
     return euclidean_distance
 
@@ -224,6 +224,10 @@ def match(students_print, mun, cal, shift):
     filtered_schools = filtered_schools[filtered_schools['COLE_CALENDARIO'] == cal]
     filtered_schools = filtered_schools[filtered_schools['COLE_JORNADA'] == shift]
 
+    if(len(filtered_schools)<1):
+        print("THERE ARE NOT SCHOOLS THAT MATCH YOUR CRITERIA")
+        return filtered_schools
+
     # GET EUCLIDEAN DISTANCE BETWEEN STUDENT'S PRINT AND SCHOOLS
     areas = ('socials', 'science', 'math', 'reading', 'english')
     areas_data =('sociales_ciudanas_rank',
@@ -232,11 +236,11 @@ def match(students_print, mun, cal, shift):
                 'lectura_critica_rank',             
                 'ingles_rank')
     student_vector = [students_print[area] for area in areas]
-    print("Stydente vector", student_vector)
-    #print(filtered_schools.apply(lambda x : get_euclidean_distance(x, student_vector, areas_data), axis=1))
+    print("Student vector =>", student_vector)
     filtered_schools['euclidean_distance'] = filtered_schools.apply(lambda x : get_euclidean_distance(x, student_vector, areas_data), axis=1)
     max_distance = filtered_schools['euclidean_distance'].max()
     min_distance = filtered_schools['euclidean_distance'].min()
+
 
     # NORMALIZE EUCLIDEAN DISTANCES 
     filtered_schools['calculated_score'] = filtered_schools.apply(lambda x : calculate_score(x,max_distance=max_distance, min_distance=min_distance), axis=1)

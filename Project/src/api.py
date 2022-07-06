@@ -1,4 +1,4 @@
-from src.functions import * 
+from apiFunctions import * 
 import pandas as pd 
 clean_school = [] #read from csv 
 

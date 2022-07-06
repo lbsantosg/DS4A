@@ -6,3 +6,5 @@ proyect_DS4A_accessKeys.csv
 
 *.csv
 *.png
+
+src/__pycache__/*
