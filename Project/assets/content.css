@@ -8,38 +8,38 @@
 
 .btn-primary {
     color: #fff;
-    background-color: #595959;
-    border-color: #595959;
+    background-color: #232323;
+    border-color: #232323;
 }
 
 .btn-outline-primary:not(:disabled):not(.disabled).active, .btn-outline-primary:not(:disabled):not(.disabled):active, .show>.btn-outline-primary.dropdown-toggle {
     color: #fff;
-    background-color: #595959;
-    border-color: #595959;
+    background-color: #232323;
+    border-color: #232323;
     font-size: 25px;
 }
 
 .btn-outline-primary {
-    color: #808080;
-    border-color: #808080;
+    color: #232323;
+    border-color: #232323;
     font-size: 25px;
 }
 
 .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
     color: #fff;
-    background-color: #808080;
-    border-color: #808080;
+    background-color: #232323;
+    border-color: #232323;
     font-size: 25px;
 }
 
 .btn-primary:hover {
     color: #fff;
-    background-color: #595959;
-    border-color: #595959;
+    background-color: #232323;
+    border-color: #232323;
 }
 
 .btn-outline-primary:hover {
     color: #fff;
-    background-color: #595959;
-    border-color: #595959;
+    background-color: #232323;
+    border-color: #232323;
 }

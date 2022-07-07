@@ -5,7 +5,7 @@
     bottom: 0;
     padding: 2rem 1rem;
     width: 18rem;
-    background-color: #808080 !important;
+    background-color: #232323!important;
     
 }
 
@@ -21,5 +21,5 @@ a.nav-link{
 
 ic.nav-link.active, a.nav-link.active{
     color: #ffffff !important;
-    background-color: #595959 !important;
+    background-color: #808080 !important;
 }

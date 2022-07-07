@@ -1,5 +1,4 @@
 #Importing libraries
-from tkinter import CENTER
 from xml.dom.minidom import Element
 from dash import html , dcc, callback, dash_table
 import dash_bootstrap_components as dbc
@@ -44,7 +43,7 @@ radioClass= "radio-group tcenter"
 #Defining our data variable
 respuestasmock={'dep_name': 'Santander', 'mun_name': 'Bucaramanga', 'school_calendar': 'Calendario A', 'school_shift': 'Completa', 'student_gender': 'Masculino', 'has_pc': 'Si', 'has_internet': 'Si', 'economic_stratus': 'Estrato 5', 'rooms_house': 'Cuatro', 'family_members': '3 a 4', 'father_education': 'Educación profesional completa', 'mother_education': 'Ninguno', 'father_job': 'Es agricultor, pesquero o jornalero', 'mother_job': 'Pensionado', 'perception_socials': 4, 'perception_science': 5, 'perception_math': 4, 'perception_reading': 4, 'perception_english': 3}
 respuestas={'dep_name': 'Santander', 'mun_name': 'Bucaramanga', 'school_calendar': 'Calendario A', 'school_shift': 'Completa', 'student_gender': 'Masculino', 'has_pc': 'Si', 'has_internet': 'Si', 'economic_stratus': 'Estrato 5', 'rooms_house': 'Cuatro', 'family_members': '3 a 4', 'father_education': 'Educación profesional completa', 'mother_education': 'Ninguno', 'father_job': 'Es agricultor, pesquero o jornalero', 'mother_job': 'Pensionado', 'perception_socials': 4, 'perception_science': 5, 'perception_math': 4, 'perception_reading': 4, 'perception_english': 3}
-print(match_maker(**respuestasmock))
+
 mock_input = {
     'dep_name': 'Antioquia',
     'mun_name' : 'Medellín',
@@ -68,18 +67,16 @@ mock_input = {
 }
 
 df= pd.read_csv("C:/Users/carbe/Documents/Data Science/DS4A/DS4A/Project/src/data/final_schools.csv")
-#grafico=PlotPodium(match_maker(**respuestas)).plot_podium()
-#tabla= grafico.plot_podium()
-    
+
 
 #Defining multiple forms type for each question
 ciudad= html.Div([
                 dbc.Label("Por favor seleccione el departamento y municipio de interés: "),
                 html.Br(),
                 html.Br(),
-                dcc.Dropdown(options=departamentos, placeholder='Seleccione el departamento', id='input_departamento', className="drop"),
+                dcc.Dropdown(options=departamentos, placeholder='Seleccione Departamento', id='input_departamento', className="drop"),
                 html.Br(),
-                dcc.Dropdown(options=list(options), placeholder='Seleccione la ciudad', id='input_ciudad', className="drop", disabled=True),
+                dcc.Dropdown(options=list(options), placeholder='Seleccione Municipio', id='input_ciudad', className="drop", disabled=True),
                 html.Br(),
                 html.Br(),
                 html.Br(),
@@ -101,7 +98,7 @@ jornada= html.Div([
                 dbc.Label("Por favor seleccione la jornada de su interes: "),
                 html.Br(),
                 html.Br(),
-                rbutton("input_jornada", {"MAÑANA": "MAÑANA", "TARDE" : "TARDE", "Completa": "COMPLETA_UNICA"}).display()      
+                rbutton("input_jornada", {"Mañana": "MAÑANA", "Tarde" : "Tarde", "Completa": "COMPLETA_UNICA"}).display()      
                 ],
                 className= radioClass                          
             )
@@ -213,7 +210,6 @@ ingles= html.Div([
             ], className="tcenter")             
 
 reserva= html.Div(id="reserva",hidden=True)
-
 
 modal= dbc.Modal(
             [
@@ -363,10 +359,10 @@ t= dbc.Container([
             ],className="container-center")
 
 lista = dbc.Container(
-    html.Ul([html.Li(dbc.Button(i)) for i in match_maker(**respuestasmock)["COLE_NOMBRE_SEDE"]]))
+    html.Ul([html.Li([dbc.Button(i,id="btn"+str(idx)), html.Br()]) for idx,i in enumerate(match_maker(**respuestasmock)["COLE_NOMBRE_SEDE"])]))
 
 
-
+#Callback to open modal with generated graphic and top schools list
 @callback(
     [Output("modal", "is_open"),Output("resultados_modal","children")],
     [Input("calcular", "n_clicks"), Input("close", "n_clicks")] ,

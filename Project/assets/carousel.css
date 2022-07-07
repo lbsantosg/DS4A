@@ -96,6 +96,13 @@
 }
 
 .modal-header{
-    background-color: #595959;
+    background-color: #232323;
     color: #ffffff;
   }
+
+  .btn-primary.focus, .btn-primary:focus {
+    color: #fff;
+    background-color: #232323;
+    border-color: #232323;
+    box-shadow: 0 0 0 .2rem #808080;
+}

@@ -20,7 +20,7 @@ navbar= dbc.Navbar(
                 # Use row and col to control vertical alignment of logo / brand
                 dbc.Row(
                     [
-                        dbc.Col(html.Img(src="./assets/images/logo.png", height="52px")),
+                        dbc.Col(html.Img(src="./assets/images/saby_logo.png", height="52px")),
                     ],
                     className="navbar",
                 ),
@@ -44,7 +44,7 @@ sidebar = html.Div(
                 html.Br(),
                 html.Br(),
                 html.Br(),
-                dbc.NavLink([html.I(className="bi bi-file-earmark-bar-graph-fill ic")," Realizar Test"],
+                dbc.NavLink([html.I(className="bi bi-file-check-fill ic")," Realizar Cuestionario"],
                 href="/cuestionario", active="exact"),                                    
                 html.Br(),
                 html.Br(),

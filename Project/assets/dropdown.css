@@ -1,5 +1,5 @@
 .Select-control {
-    background-color: #808080 !important;
+    background-color: #232323 !important;
     color: #595959 !important;
     margin:auto;
     width: 50%
@@ -14,7 +14,7 @@
 }
 
 .is.Open>.Select-control{
-    background-color: #808080;
+    background-color: #232323;
     color: #ffffff;
 }
 
