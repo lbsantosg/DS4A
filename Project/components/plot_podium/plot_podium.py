@@ -18,6 +18,12 @@ class PlotPodium:
         df_bar = df_bar.rename(columns={'Punt_lectura_critica_mean_2021':'LECTURA CRÍTICA', 'Punt_matematicas_mean_2021':'MATEMÁTICAS',\
         'Punt_c_naturales_mean_2021':'CIENCIAS NATURALES', 'Punt_sociales_ciudadanas_mean_2021':'CIENCIAS SOCIALES',\
         'Punt_ingles_mean_2021':'INGLÉS'})
+        """         df_bar['LECTURA CRÍTICA'] = df_bar['LECTURA CRÍTICA']*df_bar['calculated_score']/500
+        df_bar['MATEMÁTICAS'] = df_bar['MATEMÁTICAS']*df_bar['calculated_score']/500
+        df_bar['CIENCIAS NATURALES'] = df_bar['CIENCIAS NATURALES']*df_bar['calculated_score']/500
+        df_bar['CIENCIAS SOCIALES'] = df_bar['CIENCIAS SOCIALES']*df_bar['calculated_score']/500
+        df_bar['INGLÉS'] = df_bar['INGLÉS']*df_bar['calculated_score']/500 """
+        df_bar= df_bar.head(3).sort_values(by="Punt_global_mean_2021",ascending=False)
         df_bar = df_bar.reset_index(drop=True).reindex([1,0,2])
         print(df_bar)
         #colours used

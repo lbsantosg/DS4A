@@ -57,6 +57,12 @@ def map_inputs(
     # Set default gender 
     student_gender = 'M' if student_gender == 'OTRO' else student_gender
 
+    # Map calendar
+    calendar= 'A' if school_calendar == 'Calendario A' else 'B'
+
+    #Map school shift
+    shift = 'COMPLETA_UNICA' if school_shift == "Completa" else school_shift
+
     # Get Max education level 
     parents_education = get_max_edu(edu_mother= mother_education, edu_father= father_education)
     parents_job = get_max_job(job_mother= mother_job, job_father= father_job) 
@@ -65,8 +71,8 @@ def map_inputs(
     pc_internet_interaction = np.nan if has_pc == 'Si' and has_internet == 'Si' else 0
     return { 
         'COLE_COD_MCPIO_UBICACION': mun_code, 
-        'COLE_CALENDARIO': school_calendar,
-        'COLE_JORNADA' : school_shift,
+        'COLE_CALENDARIO': calendar,
+        'COLE_JORNADA' : shift,
         'ESTU_GENERO': student_gender,
         'FAMI_TIENECOMPUTADOR' : has_pc,
         'FAMI_TIENEINTERNET': has_internet,
@@ -219,8 +225,11 @@ def match(students_print, mun, cal, shift):
     '''
     # FILTER SCHOOLS BY MUN, CAL, SHIFT
     filtered_schools = all_schools[all_schools['COLE_COD_MCPIO_UBICACION'] == int(mun)] 
+    print(filtered_schools.shape)
     filtered_schools = filtered_schools[filtered_schools['COLE_CALENDARIO'] == cal]
+    print(filtered_schools.shape)
     filtered_schools = filtered_schools[filtered_schools['COLE_JORNADA'] == shift]
+    print(filtered_schools.shape)
 
     if(len(filtered_schools)<1):
         print("THERE ARE NOT SCHOOLS THAT MATCH YOUR CRITERIA")
@@ -244,8 +253,8 @@ def match(students_print, mun, cal, shift):
     filtered_schools['calculated_score'] = filtered_schools.apply(lambda x : calculate_score(x,max_distance=max_distance, min_distance=min_distance), axis=1)
 
     # SORT SCHOOLS 
-    filtered_schools.sort_values(by= ['calculated_score', 'PUNT_GLOBAL'], ascending=False, inplace=True)
-    columns=['COLE_COD_DANE_ESTABLECIMIENTO', 'COLE_NOMBRE_SEDE','euclidean_distance','calculated_score','Punt_lectura_critica_mean_2021', 'Punt_matematicas_mean_2021','Punt_c_naturales_mean_2021', 'Punt_sociales_ciudadanas_mean_2021','Punt_ingles_mean_2021','COLE_NOMBRE_SEDE']
+    filtered_schools.sort_values(by=['calculated_score'], ascending=False, inplace=True)
+    columns=['COLE_NOMBRE_SEDE','Punt_global_mean_2021', 'COLE_COD_DANE_ESTABLECIMIENTO','calculated_score','euclidean_distance','Punt_lectura_critica_mean_2021', 'Punt_matematicas_mean_2021','Punt_c_naturales_mean_2021', 'Punt_sociales_ciudadanas_mean_2021','Punt_ingles_mean_2021']
     return filtered_schools[columns].head(10)
 
 def get_max_edu(edu_mother, edu_father): 

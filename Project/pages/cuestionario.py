@@ -1,12 +1,16 @@
 #Importing libraries
-from dash import html , dcc, callback
+from tkinter import CENTER
+from xml.dom.minidom import Element
+from dash import html , dcc, callback, dash_table
 import dash_bootstrap_components as dbc
 from dash_labs.plugins import register_page
 import dash_trich_components as dtc
 import json
 from dash import Input, Output, State
 from matplotlib.pyplot import figure
+from numpy import empty
 import pandas as pd
+import plotly.io as pio
 
 
 #Importing components
@@ -38,12 +42,9 @@ departamentos=list(places["Departamento"].drop_duplicates())
 radioClass= "radio-group tcenter"
 
 #Defining our data variable
-respuestas={'dep_name': 'Antioquia','mun_name': 'Bogotá, D.C.', 'school_calendar': 'B', 'school_shift': 'COMPLETA_UNICA',
- 'student_gender': 'F', 'has_pc': 'Si', 'has_internet': 'Si', 'economic_stratus': 'Estrato 6',
-  'rooms_house': 'Dos', 'family_members': '3 a 4', 'father_education': 'Educación profesional completa',
-   'mother_education': 'Postgrado', 'father_job': 'Pensionado', 'mother_job': 'Es agricultor, pesquero o jornalero',
-    'perception_socials': 3, 'perception_science': 5, 'perception_math': 5,
-     'perception_reading': 4, 'perception_english': 3}
+respuestasmock={'dep_name': 'Santander', 'mun_name': 'Bucaramanga', 'school_calendar': 'Calendario A', 'school_shift': 'Completa', 'student_gender': 'Masculino', 'has_pc': 'Si', 'has_internet': 'Si', 'economic_stratus': 'Estrato 5', 'rooms_house': 'Cuatro', 'family_members': '3 a 4', 'father_education': 'Educación profesional completa', 'mother_education': 'Ninguno', 'father_job': 'Es agricultor, pesquero o jornalero', 'mother_job': 'Pensionado', 'perception_socials': 4, 'perception_science': 5, 'perception_math': 4, 'perception_reading': 4, 'perception_english': 3}
+respuestas={'dep_name': 'Santander', 'mun_name': 'Bucaramanga', 'school_calendar': 'Calendario A', 'school_shift': 'Completa', 'student_gender': 'Masculino', 'has_pc': 'Si', 'has_internet': 'Si', 'economic_stratus': 'Estrato 5', 'rooms_house': 'Cuatro', 'family_members': '3 a 4', 'father_education': 'Educación profesional completa', 'mother_education': 'Ninguno', 'father_job': 'Es agricultor, pesquero o jornalero', 'mother_job': 'Pensionado', 'perception_socials': 4, 'perception_science': 5, 'perception_math': 4, 'perception_reading': 4, 'perception_english': 3}
+print(match_maker(**respuestasmock))
 mock_input = {
     'dep_name': 'Antioquia',
     'mun_name' : 'Medellín',
@@ -66,9 +67,9 @@ mock_input = {
     'perception_english': 3
 }
 
-grafico=PlotPodium(match_maker(**mock_input))
-
-tabla= grafico.plot_podium()
+df= pd.read_csv("C:/Users/carbe/Documents/Data Science/DS4A/DS4A/Project/src/data/final_schools.csv")
+#grafico=PlotPodium(match_maker(**respuestas)).plot_podium()
+#tabla= grafico.plot_podium()
     
 
 #Defining multiple forms type for each question
@@ -100,7 +101,7 @@ jornada= html.Div([
                 dbc.Label("Por favor seleccione la jornada de su interes: "),
                 html.Br(),
                 html.Br(),
-                rbutton("input_jornada", {"Mañana": "mañana", "Tarde" : "tarde", "Completa": "COMPLETA_UNICA"}).display()      
+                rbutton("input_jornada", {"MAÑANA": "MAÑANA", "TARDE" : "TARDE", "Completa": "COMPLETA_UNICA"}).display()      
                 ],
                 className= radioClass                          
             )
@@ -224,10 +225,11 @@ modal= dbc.Modal(
                     dbc.Button(
                         "Cerrar", id="close", className="ms-auto", n_clicks=0
                     )
-                ),
+                ),""
             ],
             id="modal",
             className='modal-lg',
+            size="xl",
             is_open=False,
         )
 
@@ -355,7 +357,16 @@ def calculate_print(btn):
 
     return True
 
-    
+t= dbc.Container([
+                html.H4("Lista de los colegios con mejor afinidad para su hijo"),
+                dash_table.DataTable(match_maker(**respuestasmock)["COLE_NOMBRE_SEDE"].to_frame().to_dict('records'),[{"name": i, "id": i} for i in ["COLE_NOMBRE_SEDE"]],id="tbl"), dbc.Alert(id='tbl_out')
+            ],className="container-center")
+
+lista = dbc.Container(
+    html.Ul([html.Li(dbc.Button(i)) for i in match_maker(**respuestasmock)["COLE_NOMBRE_SEDE"]]))
+
+
+
 @callback(
     [Output("modal", "is_open"),Output("resultados_modal","children")],
     [Input("calcular", "n_clicks"), Input("close", "n_clicks")] ,
@@ -363,5 +374,16 @@ def calculate_print(btn):
 )
 def toggle_modal(n1, n2, is_open):
     if n1 or n2:
-        return not is_open, tabla
-    return is_open , ""
+        
+        if match_maker(**respuestasmock).empty:
+            print(respuestasmock)
+            return not is_open, "No tenemos colegios que se ajusten a tus requerimientos, intenta cambiar tus respuestas"
+
+        elif match_maker(**respuestasmock).empty ==False:
+            table = dbc.Table.from_dataframe(match_maker(**respuestasmock)["COLE_NOMBRE_SEDE"].to_frame(), striped=True, dark=True)
+            
+            return not is_open, [dcc.Graph(figure=PlotPodium(match_maker(**respuestasmock)).plot_podium()), lista]
+
+    return is_open , "No tenemos colegios que se ajusten a tus requerimientos, intenta cambiar tus respuestas"
+
+
