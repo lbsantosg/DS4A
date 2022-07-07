@@ -80,6 +80,8 @@ ciudad= html.Div([
                 html.Br(),
                 html.Br(),
                 html.Br(),
+                html.Br(),
+                html.Br()
             ]
             ,className="tcenter"
                     
@@ -162,6 +164,8 @@ escolaridad= html.Div([
                 dcc.Dropdown(fields["FAMI_EDUCACIONPADRE"], placeholder='Escolaridad Madre', id='input_esco_madre', className="drop"), 
                 html.Br(),           
                 html.Br(),
+                html.Br(),           
+                html.Br(),
             ],className="tcenter") 
 
 ocupacion= html.Div([
@@ -171,7 +175,12 @@ ocupacion= html.Div([
                 dcc.Dropdown(fields["FAMI_TRABAJOLABORPADRE"], placeholder='Categoría Ocupacion Padre', id='input_ocu_padre', className="drop"),
                 html.Br(),
                 dcc.Dropdown(fields["FAMI_TRABAJOLABORPADRE"], placeholder='Categoría Ocupacion Madre', id='input_ocu_madre', className="drop"),
-                html.Br()                         
+                html.Br(),
+                html.Br(),           
+                html.Br(),
+                html.Br(),           
+                html.Br()   
+
             ],className="tcenter")
                                          
 sociales= html.Div([
