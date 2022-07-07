@@ -43,3 +43,15 @@
     background-color: #232323;
     border-color: #232323;
 }
+
+.col {
+    margin:auto;
+}
+
+.col_one{
+    padding-right: 0px;
+}
+
+.col_two{
+    padding-left: 0px;
+}

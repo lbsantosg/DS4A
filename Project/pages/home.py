@@ -15,14 +15,11 @@ register_page(__name__, path="/")
 
 
 layout=  dbc.Container([
-    dbc.DropdownMenu(
-    
-    [        
-        dbc.DropdownMenuItem(option)
-        for option in options
-    ],
-    label = "Test Menu",
-    menu_variant="dark",
-    className="content"
-)
+   dbc.Row([
+    dbc.Col(html.H1("Bienvenido a"),className="col_one"),
+    dbc.Col(html.Img(src="./assets/images/saby_logo.png"),className="col_two")
+
+   ],className="content tcenter"   
+   ) 
+
 ])

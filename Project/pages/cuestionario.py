@@ -376,7 +376,6 @@ def toggle_modal(n1, n2, is_open):
             return not is_open, "No tenemos colegios que se ajusten a tus requerimientos, intenta cambiar tus respuestas"
 
         elif match_maker(**respuestasmock).empty ==False:
-            table = dbc.Table.from_dataframe(match_maker(**respuestasmock)["COLE_NOMBRE_SEDE"].to_frame(), striped=True, dark=True)
             
             return not is_open, [dcc.Graph(figure=PlotPodium(match_maker(**respuestasmock)).plot_podium()), lista]
 
