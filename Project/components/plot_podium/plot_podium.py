@@ -19,7 +19,7 @@ class PlotPodium:
         'Punt_c_naturales_mean_2021':'CIENCIAS NATURALES', 'Punt_sociales_ciudadanas_mean_2021':'CIENCIAS SOCIALES',\
         'Punt_ingles_mean_2021':'INGLÉS'})
         df_bar = df_bar.reset_index(drop=True).reindex([1,0,2])
-
+        print(df_bar)
         #colours used
         color1 = '#ef476f'
         saby_yellow = '#f2ab2c'

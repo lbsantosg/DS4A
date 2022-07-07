@@ -10,7 +10,7 @@ import dash_trich_components as dtc
 
 
 # Dash instance declaration , using icons from font awesome
-app = dash.Dash(__name__, plugins=[dl.plugins.pages], external_stylesheets=[dbc.icons.BOOTSTRAP, 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'], suppress_callback_exceptions=True)
+app = dash.Dash(__name__, plugins=[dl.plugins.pages], external_stylesheets=[dbc.icons.BOOTSTRAP])
 
 #Top navbar
 navbar= dbc.Navbar(
@@ -96,4 +96,4 @@ app.layout = dbc.Container(
 
 # Testing server, don't use in production, host
 if __name__ == "__main__":
-    app.run_server(debug=True, host='0.0.0.0')
+    app.run_server(debug=True, host='127.0.0.1')
