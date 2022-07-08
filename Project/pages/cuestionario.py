@@ -17,6 +17,7 @@ from components.drop_text.dropt import dropt
 from components.slider.slider import slider
 from components.rbutton.rbutton import rbutton
 from components.plot_podium.plot_podium import PlotPodium
+from components.plot_historic_school.plot_historic_school import PlotHistoric
 
 #Importing local API functions
 from src.api import match_maker, get_school
@@ -43,7 +44,6 @@ radioClass= "radio-group tcenter"
 #Defining our data variable
 respuestasmock={'dep_name': 'Santander', 'mun_name': 'Bucaramanga', 'school_calendar': 'Calendario A', 'school_shift': 'Completa', 'student_gender': 'Masculino', 'has_pc': 'Si', 'has_internet': 'Si', 'economic_stratus': 'Estrato 5', 'rooms_house': 'Cuatro', 'family_members': '3 a 4', 'father_education': 'Educación profesional completa', 'mother_education': 'Ninguno', 'father_job': 'Es agricultor, pesquero o jornalero', 'mother_job': 'Pensionado', 'perception_socials': 4, 'perception_science': 5, 'perception_math': 4, 'perception_reading': 4, 'perception_english': 3}
 respuestas={'dep_name': 'Santander', 'mun_name': 'Bucaramanga', 'school_calendar': 'Calendario A', 'school_shift': 'Completa', 'student_gender': 'Masculino', 'has_pc': 'Si', 'has_internet': 'Si', 'economic_stratus': 'Estrato 5', 'rooms_house': 'Cuatro', 'family_members': '3 a 4', 'father_education': 'Educación profesional completa', 'mother_education': 'Ninguno', 'father_job': 'Es agricultor, pesquero o jornalero', 'mother_job': 'Pensionado', 'perception_socials': 4, 'perception_science': 5, 'perception_math': 4, 'perception_reading': 4, 'perception_english': 3}
-
 mock_input = {
     'dep_name': 'Antioquia',
     'mun_name' : 'Medellín',
@@ -223,8 +223,7 @@ reserva= html.Div(id="reserva",hidden=True)
 modal= dbc.Modal(
             [
                 dbc.ModalHeader(dbc.ModalTitle("Resultados"),class_name="mheader"),
-                dbc.ModalBody(
-                   "Wenas"
+                dbc.ModalBody([]
                 ,id="resultados_modal"),
                 dbc.ModalFooter(
                     dbc.Button(
@@ -244,9 +243,9 @@ calcular= html.Div([
     dbc.Button(
         "Calcular Resultados",
 
-        id="calcular",        
+        id="calcular",         
     )
-],className="tcenter")
+],style={"padding-top":"10%"},className="tcenter")
 
 #Establishing carousel with questions
 carousel = dtc.Carousel([
@@ -367,9 +366,37 @@ t= dbc.Container([
                 dash_table.DataTable(match_maker(**respuestasmock)["COLE_NOMBRE_SEDE"].to_frame().to_dict('records'),[{"name": i, "id": i} for i in ["COLE_NOMBRE_SEDE"]],id="tbl"), dbc.Alert(id='tbl_out')
             ],className="container-center")
 
-lista = dbc.Container(
-    html.Ul([html.Li([dbc.Button(i,id="btn"+str(idx)), html.Br()]) for idx,i in enumerate(match_maker(**respuestasmock)["COLE_NOMBRE_SEDE"])]))
+lista = dbc.Container([
+    html.H5("Esta es la lista de los colegios que mejor podrían adaptarse al estudiante:"),
+    html.Br(),html.Br(),
+    html.Ul([html.Li([dbc.Button(i,id="btn"+str(idx)), html.Br(),html.Br()]) for idx,i in enumerate(match_maker(**respuestas)["COLE_NOMBRE_SEDE"])])]
+    )
 
+
+
+
+modal_historico= dbc.Modal(
+    [
+        dbc.ModalHeader(dbc.ModalTitle([],id="historic_title"),class_name="historic_header"),
+        dbc.ModalBody([]
+            ,id="historic_body"),
+        dbc.ModalFooter(
+            dbc.Button(
+                "Cerrar", id="close_historic", className="ms-auto", n_clicks=0
+            )
+        ),""
+    ],
+    id="historic_modal",
+    className='modal-lg',
+    size="xl",
+    is_open=False,
+)
+
+colegios= dbc.Container([
+    html.H5("Esta es la lista de los colegios que mejor podrían adaptarse al estudiante:"),
+    html.Br(),html.Br(),
+    html.Ul([html.Li([dbc.Button(i,id="btn"+str(idx)), html.Br(),html.Br()]) for idx,i in enumerate(match_maker(**respuestas)["COLE_NOMBRE_SEDE"])])]
+    )
 
 #Callback to open modal with generated graphic and top schools list
 @callback(
@@ -380,13 +407,17 @@ lista = dbc.Container(
 def toggle_modal(n1, n2, is_open):
     if n1 or n2:
         
-        if match_maker(**respuestasmock).empty:
-            print(respuestasmock)
+        if match_maker(**respuestas).empty:
+            print(respuestas)
             return not is_open, "No tenemos colegios que se ajusten a tus requerimientos, intenta cambiar tus respuestas"
 
-        elif match_maker(**respuestasmock).empty ==False:
+        elif match_maker(**respuestas).empty ==False:
             
-            return not is_open, [dcc.Graph(figure=PlotPodium(match_maker(**respuestasmock)).plot_podium()), lista]
+            return not is_open, [dcc.Graph(figure=PlotPodium(match_maker(**respuestas)).plot_podium()), dbc.Container([
+    html.H5("Esta es la lista de los colegios que mejor podrían adaptarse al estudiante:"),
+    html.Br(),html.Br(),
+    html.Ul([html.Li([dbc.Button(i,id="btn"+str(idx)), html.Br(),html.Br()]) for idx,i in enumerate(match_maker(**respuestas)["COLE_NOMBRE_SEDE"])])]
+    )]
 
     return is_open , "No tenemos colegios que se ajusten a tus requerimientos, intenta cambiar tus respuestas"
 

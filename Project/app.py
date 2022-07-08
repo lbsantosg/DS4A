@@ -20,7 +20,7 @@ navbar= dbc.Navbar(
                 # Use row and col to control vertical alignment of logo / brand
                 dbc.Row(
                     [
-                        dbc.Col(html.Img(src="./assets/images/saby_logo.png", height="52px")),
+                        dbc.Col(html.Img(src="./assets/images/saby_logo.png", height="60px")),
                     ],
                     className="navbar",
                 ),
@@ -97,3 +97,5 @@ app.layout = dbc.Container(
 # Testing server, don't use in production, host
 if __name__ == "__main__":
     app.run_server(debug=True, host='127.0.0.1')
+
+
