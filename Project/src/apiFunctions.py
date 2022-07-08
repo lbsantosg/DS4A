@@ -255,7 +255,7 @@ def match(students_print, mun, cal, shift):
     # SORT SCHOOLS 
     filtered_schools.sort_values(by=['calculated_score'], ascending=False, inplace=True)
     columns=['COLE_NOMBRE_SEDE','Punt_global_mean_2021', 'COLE_COD_DANE_ESTABLECIMIENTO','calculated_score','euclidean_distance','Punt_lectura_critica_mean_2021', 'Punt_matematicas_mean_2021','Punt_c_naturales_mean_2021', 'Punt_sociales_ciudadanas_mean_2021','Punt_ingles_mean_2021']
-    return filtered_schools[columns].head(10)
+    return filtered_schools.head(10)
 
 def get_max_edu(edu_mother, edu_father): 
     '''

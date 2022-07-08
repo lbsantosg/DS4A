@@ -272,7 +272,7 @@ carousel = dtc.Carousel([
         slides_to_scroll=1,
         swipe_to_slide=False,
         dots=True     
-		)
+        )
 
 #Establishing layout
 layout= dbc.Container(
@@ -366,7 +366,7 @@ t= dbc.Container([
             ],className="container-center")
 
 lista = dbc.Container([
-    html.H5("Esta es la lista de los colegios que mejor podrían adaptarse al estudiante:"),
+    html.H5("Esta  la lista de los colegios que mejor podrían adaptarse al estudiante:"),
     html.Br(),html.Br(),
     html.Ul([html.Li([dbc.Button(i,id="btn"+str(idx)), html.Br(),html.Br()]) for idx,i in enumerate(match_maker(**respuestas)["COLE_NOMBRE_SEDE"])])]
     )
@@ -392,7 +392,7 @@ modal_historico= dbc.Modal(
 )
 
 colegios= dbc.Container([
-    html.H5("Esta es la lista de los colegios que mejor podrían adaptarse al estudiante:"),
+    html.H5("Esta e la lista de los colegios que mejor podrían adaptarse al estudiante:"),
     html.Br(),html.Br(),
     html.Ul([html.Li([dbc.Button(i,id="btn"+str(idx)), html.Br(),html.Br()]) for idx,i in enumerate(match_maker(**respuestas)["COLE_NOMBRE_SEDE"])])]
     )
@@ -404,6 +404,7 @@ colegios= dbc.Container([
     [State("modal", "is_open")],
 )
 def toggle_modal(n1, n2, is_open):
+    respuestas = mock_input
     if n1 or n2:
         
         if match_maker(**respuestas).empty:
@@ -411,13 +412,25 @@ def toggle_modal(n1, n2, is_open):
             return not is_open, "No tenemos colegios que se ajusten a tus requerimientos, intenta cambiar tus respuestas"
 
         elif match_maker(**respuestas).empty ==False:
-            
+            colegios = match_maker(**respuestas)
+            list_col = []
+            new_line = '\n'
+            print(colegios.columns)
+            i = 1
+            for idx, col in colegios.iterrows():
+                print('COL', col['telefono'])
+                direc = col['direccion']
+                tel = col['telefono']
+                niv = col['niveles']
+                elem = html.Div([html.P(f'DIRECCION: {direc}'), html.P(f'TELEFONO: {tel}'), html.P(f'NIVELES: {niv}')  ])
+                list_col.append(dbc.AccordionItem(elem ,title=str(i) + "." + col['COLE_NOMBRE_SEDE']))
+                i += 1 
             return not is_open, [dcc.Graph(figure=PlotPodium(match_maker(**respuestas)).plot_podium()), dbc.Container([
-    html.H5("Esta es la lista de los colegios que mejor podrían adaptarse al estudiante:"),
-    html.Br(),html.Br(),
-    html.Ul([html.Li([dbc.Button(i,id="btn"+str(idx)), html.Br(),html.Br()]) for idx,i in enumerate(match_maker(**respuestas)["COLE_NOMBRE_SEDE"])])]
-    )]
+            html.H5("Esta es la lista de los colegios que mejor podrían adaptarse al estudiante:"),
+            html.Br(),html.Br(),    
+            dbc.Accordion(list_col)
+        
+            ]
+            )]
 
     return is_open , "No tenemos colegios que se ajusten a tus requerimientos, intenta cambiar tus respuestas"
-
-
