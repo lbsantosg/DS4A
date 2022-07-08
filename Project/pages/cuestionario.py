@@ -66,7 +66,6 @@ mock_input = {
     'perception_english': 3
 }
 
-df= pd.read_csv("C:/Users/carbe/Documents/Data Science/DS4A/DS4A/Project/src/data/final_schools.csv")
 
 
 #Defining multiple forms type for each question
