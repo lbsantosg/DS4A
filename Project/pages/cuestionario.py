@@ -404,7 +404,6 @@ colegios= dbc.Container([
     [State("modal", "is_open")],
 )
 def toggle_modal(n1, n2, is_open):
-    respuestas = mock_input
     if n1 or n2:
         
         if match_maker(**respuestas).empty:
