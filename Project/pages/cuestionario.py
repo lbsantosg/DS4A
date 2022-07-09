@@ -8,6 +8,7 @@ import json
 from dash import Input, Output, State
 from matplotlib.pyplot import figure
 from numpy import empty
+import numpy
 import pandas as pd
 import plotly.io as pio
 
@@ -406,29 +407,43 @@ colegios= dbc.Container([
 def toggle_modal(n1, n2, is_open):
     if n1 or n2:
         
-        if match_maker(**respuestas).empty:
+        if match_maker(**respuestasmock).empty:
             print(respuestas)
             return not is_open, "No tenemos colegios que se ajusten a tus requerimientos, intenta cambiar tus respuestas"
 
-        elif match_maker(**respuestas).empty ==False:
-            colegios = match_maker(**respuestas)
+        elif match_maker(**respuestasmock).empty ==False:
+            colegios = match_maker(**respuestasmock)
             list_col = []
             new_line = '\n'
-            print(colegios.columns)
-            i = 1
+            i = 1            
+
+            podium_plot=dcc.Graph(figure=PlotPodium(match_maker(**respuestasmock)).plot_podium(),id="podium_graph")
+
             for idx, col in colegios.iterrows():
-                print('COL', col['telefono'])
+
+                #Plotting school info    
+                #print('COL', col['telefono'])
+                idio = col['idiomas']
+                if type(idio) == float:
+                    idio = "Sin registros de idiomas adicionales"
                 direc = col['direccion']
                 tel = col['telefono']
                 niv = col['niveles']
-                elem = html.Div([html.P(f'DIRECCION: {direc}'), html.P(f'TELEFONO: {tel}'), html.P(f'NIVELES: {niv}')  ])
+
+                #Plotting historic graph
+                c = get_school(col["COLE_COD_DANE_ESTABLECIMIENTO"])
+                historic = PlotHistoric(c.iloc[0]).plotHistoric()
+                h_graph=  html.Div(["PUNTUACIÓN HISTÓRICA DEL COLEGIO POR ÁREA: ",dcc.Graph(figure=historic,id="historic_chart")])
+                elem = html.Div([html.P(f'DIRECCION: {direc}'), html.P(f'TELEFONO: {tel}'), html.P(f'NIVELES: {niv}'),html.P(f'IDIOMAS: {idio}'),h_graph, html.Br()])
                 list_col.append(dbc.AccordionItem(elem ,title=str(i) + "." + col['COLE_NOMBRE_SEDE']))
                 i += 1 
-            return not is_open, [dcc.Graph(figure=PlotPodium(match_maker(**respuestas)).plot_podium()), dbc.Container([
+
+            return not is_open, [podium_plot, dbc.Container([
             html.H5("Esta es la lista de los colegios que mejor podrían adaptarse al estudiante:"),
-            html.Br(),html.Br(),    
-            dbc.Accordion(list_col)
-        
+            html.Br(),
+            html.Br(),    
+            dbc.Accordion(list_col),
+            html.Br()        
             ]
             )]
 

@@ -19,7 +19,7 @@ class PlotHistoric:
         data_plot = pd.DataFrame(columns=columns, index=index)
         for x in range(len(data_plot)):
             y = x*6
-            data_plot.iloc[x]=dataframe.iloc[y+14:y+19]
+            data_plot.iloc[x]=dataframe.iloc[y+20:y+25]
 
         #rounds float 
         data_plot = data_plot.astype(float).round(2)
@@ -87,7 +87,7 @@ class PlotHistoric:
                         marker_symbol='hexagon',                  
                         )
         #finally plots it
-        pio.show(lineplot)
+        #pio.show(lineplot)
 
         return lineplot
 

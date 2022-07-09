@@ -96,6 +96,6 @@ app.layout = dbc.Container(
 
 # Testing server, don't use in production, host
 if __name__ == "__main__":
-    app.run_server(debug=True, host='0.0.0.0')
+    app.run_server(debug=True, host='127.0.0.1')
 
 

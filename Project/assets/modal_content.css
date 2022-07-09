@@ -6,7 +6,7 @@
     text-align: center;
 }
 
-.js-plotly-plot .plotly, .js-plotly-plot .plotly div {
-    padding: 2% 10% !important;
+#podium_graph {
+    padding-left: 10%;
 }
 
