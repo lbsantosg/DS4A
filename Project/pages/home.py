@@ -5,11 +5,6 @@ from dash_labs.plugins import register_page
 import json
 
 
-#Getting json info
-j = open("./data/jsonfiles/demo.json")
-datastore=  json.load(j)
-options= datastore["demo_options"]
-
 register_page(__name__, path="/")
 
 

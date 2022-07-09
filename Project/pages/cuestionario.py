@@ -27,10 +27,6 @@ from src.api import match_maker, get_school
 register_page(__name__, path="/cuestionario")
 
 #Getting json data and definig data variables
-j = open("./data/jsonfiles/demo.json")
-datastore=  json.load(j)
-options= datastore["demo_options"]
-
 f= open("./data/jsonfiles/fields.json", encoding='utf-8') 
 fields= json.load(f)
 
@@ -76,7 +72,7 @@ ciudad= html.Div([
                 html.Br(),
                 dcc.Dropdown(options=departamentos, placeholder='Seleccione Departamento', id='input_departamento', className="drop"),
                 html.Br(),
-                dcc.Dropdown(options=list(options), placeholder='Seleccione Municipio', id='input_ciudad', className="drop", disabled=True),
+                dcc.Dropdown(options=departamentos, placeholder='Seleccione Municipio', id='input_ciudad', className="drop", disabled=True),
                 html.Br(),
                 html.Br(),
                 html.Br(),
@@ -295,7 +291,7 @@ layout= dbc.Container(
 def update_output(value):
 
     if value == 'Seleccione el departamento' or value == "" or value == None:
-        return [True, options]
+        return [True, departamentos]
     else:
         return [False, list(places["Municipio"].where(places['Departamento']==value).dropna())]
 
@@ -411,13 +407,13 @@ def toggle_modal(n1, n2, is_open):
             print(respuestas)
             return not is_open, "No tenemos colegios que se ajusten a tus requerimientos, intenta cambiar tus respuestas"
 
-        elif match_maker(**respuestasmock).empty ==False:
-            colegios = match_maker(**respuestasmock)
+        elif match_maker(**respuestas).empty ==False:
+            colegios = match_maker(**respuestas)
             list_col = []
             new_line = '\n'
             i = 1            
 
-            podium_plot=dcc.Graph(figure=PlotPodium(match_maker(**respuestasmock)).plot_podium(),id="podium_graph")
+            podium_plot=dcc.Graph(figure=PlotPodium(match_maker(**respuestas)).plot_podium(),id="podium_graph")
 
             for idx, col in colegios.iterrows():
 
@@ -438,9 +434,11 @@ def toggle_modal(n1, n2, is_open):
                 list_col.append(dbc.AccordionItem(elem ,title=str(i) + "." + col['COLE_NOMBRE_SEDE']))
                 i += 1 
 
-            return not is_open, [podium_plot, dbc.Container([
-            html.H5("Esta es la lista de los colegios que mejor podrían adaptarse al estudiante:"),
-            html.Br(),
+            return not is_open, [
+            html.H4("Estos son los tres colegios mejor podrían podrían adaptarse al estudiante:"),
+            podium_plot,
+            dbc.Container([
+            html.H5("Esta es la lista de información de los colegios:"),
             html.Br(),    
             dbc.Accordion(list_col),
             html.Br()        
